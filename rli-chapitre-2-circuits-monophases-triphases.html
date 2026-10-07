@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RLI · Chapitre 2 · Circuits monophasés et triphasés</title>
+<meta name="description" content="EC03 Réseaux locaux industriels — Chapitre 2 : conversion courants et tensions, régime continu, régime sinusoïdal monophasé, régime sinusoïdal triphasé.">
+<meta name="color-scheme" content="light dark">
+<style>
+:root{
+  --bg:#f6f5f1;--surface:#ffffff;--surface-soft:#f1efe9;--surface-sunk:#e9e6de;
+  --text:#1c2230;--text-muted:#566070;--text-faint:#868d99;
+  --border:#e1ddd3;--border-strong:#cbc5b8;
+  --accent:#24467f;--accent-strong:#173160;--accent-soft:#eaeff7;--accent-line:#bfcbe3;
+  --success:#2a7250;--success-soft:#e8f3ec;--success-line:#b8d8c5;
+  --warning:#995600;--warning-soft:#fcf2e2;--warning-line:#ecd0a2;
+  --retain:#5c3b95;--retain-soft:#f2edf8;--retain-line:#d3c5e8;
+  --u:#c7382d;--i:#2a63c8;--ph1:#c7382d;--ph2:#2a63c8;--ph3:#22865a;
+  --fig-ink:#2a3140;--fig-soft:#9aa1ad;--fig-fill:#f4f2ed;
+  --tbt:#e3b505;--bt:#2f8f46;--hta:#2a55c4;--htb:#c4302b;
+  --radius:10px;
+  --font:Inter,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --math:"Cambria Math",Cambria,"STIX Two Math","STIX Two Text","Latin Modern Math","Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#121519;--surface:#191d23;--surface-soft:#20252d;--surface-sunk:#272d36;
+    --text:#e4e7eb;--text-muted:#a5acb8;--text-faint:#7c8390;
+    --border:#2c323c;--border-strong:#3b424e;
+    --accent:#93b1e8;--accent-strong:#bccff3;--accent-soft:#1c2539;--accent-line:#34476c;
+    --success:#71c79a;--success-soft:#16261e;--success-line:#2c4a3a;
+    --warning:#e8a84d;--warning-soft:#2a2114;--warning-line:#5b4523;
+    --retain:#bba0e8;--retain-soft:#221c30;--retain-line:#45385f;
+    --u:#f2766b;--i:#71a2f2;--ph1:#f2766b;--ph2:#71a2f2;--ph3:#4fc28a;
+    --fig-ink:#d0d5dd;--fig-soft:#6d7582;--fig-fill:#20252d;
+    --tbt:#e9c33a;--bt:#4fb267;--hta:#6f91ea;--htb:#ec6a62;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16.5px/1.65 var(--font);font-feature-settings:"kern","liga"}
+a{color:var(--accent)}
+p{margin:.7em 0}
+ul,ol{padding-left:1.35em}
+li{margin:.25em 0}
+strong{font-weight:650}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* ---------- En-tête ---------- */
+.head{background:var(--surface);border-bottom:1px solid var(--border)}
+.head .wrap{padding-top:26px;padding-bottom:24px}
+.eyebrow{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);font-weight:650}
+h1{font-size:clamp(1.65rem,3.3vw,2.4rem);line-height:1.15;letter-spacing:-.012em;margin:.4em 0 .25em;font-weight:750}
+.chapno{display:inline-flex;align-items:center;justify-content:center;min-width:1.55em;height:1.55em;padding:0 .3em;border-radius:9px;background:var(--accent);color:var(--surface);font-size:.62em;margin-right:.5em;vertical-align:.18em;font-weight:700}
+.subtitle{color:var(--text-muted);font-size:1.05rem;margin:.2em 0 .9em;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:4px 22px;color:var(--text-muted);font-size:.9rem;margin:0;padding:0;list-style:none}
+.meta li{margin:0}
+.meta b{color:var(--text);font-weight:600}
+.chapnav{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.chapnav a{font-size:.86rem;text-decoration:none;border:1px solid var(--border);border-radius:99px;padding:5px 13px;color:var(--text-muted);background:var(--surface)}
+.chapnav a:hover{border-color:var(--accent-line);color:var(--accent)}
+.chapnav a.cur{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent);font-weight:600}
+
+/* ---------- Mise en page ---------- */
+.layout{display:grid;grid-template-columns:1fr;gap:28px;padding-top:30px;padding-bottom:80px}
+@media (min-width:1080px){.layout{grid-template-columns:236px minmax(0,1fr);gap:48px}}
+main{min-width:0;max-width:860px}
+
+/* ---------- Sommaire ---------- */
+.toc{font-size:.88rem;line-height:1.4}
+.toc .ttl{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint);font-weight:700;margin:0 0 10px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li{margin:0}
+.toc a{display:block;padding:5px 10px 5px 12px;border-left:2px solid var(--border);color:var(--text-muted);text-decoration:none}
+.toc a:hover{color:var(--text)}
+.toc a.on{border-left-color:var(--accent);color:var(--accent);font-weight:600}
+.toc a .n{display:inline-block;min-width:1.5em;color:var(--text-faint);font-variant-numeric:tabular-nums}
+.toc a.on .n{color:var(--accent)}
+.toc ol ol a{padding-left:28px;font-size:.83rem}
+.toc .tools{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.btn{font:inherit;font-size:.82rem;color:var(--accent);background:var(--surface);border:1px solid var(--accent-line);border-radius:8px;padding:6px 12px;cursor:pointer}
+.btn:hover{background:var(--accent-soft)}
+@media (min-width:1080px){.toc{position:sticky;top:22px;align-self:start;max-height:calc(100vh - 44px);overflow:auto;padding-bottom:10px}}
+@media (max-width:1079px){
+  .toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+  .toc ol ol{display:none}
+  .toc>ol{columns:2 220px;column-gap:18px}
+  .toc a{border-left:0;padding:4px 0}
+}
+
+/* ---------- Titres et sections ---------- */
+.sec{scroll-margin-top:18px}
+.sec+.sec{margin-top:64px;padding-top:44px;border-top:1px solid var(--border)}
+h2{font-size:clamp(1.4rem,2.6vw,1.8rem);line-height:1.2;letter-spacing:-.01em;margin:0 0 .5em;font-weight:720;display:flex;align-items:baseline;gap:.55em}
+h2 .n{flex:none;font-size:.78em;color:var(--accent);font-variant-numeric:tabular-nums;border:1.5px solid var(--accent-line);background:var(--accent-soft);border-radius:8px;padding:.02em .42em;line-height:1.35}
+h3{font-size:1.24rem;line-height:1.3;margin:2.1em 0 .55em;font-weight:680;scroll-margin-top:18px}
+h3 .n{color:var(--accent);font-variant-numeric:tabular-nums;margin-right:.45em;font-weight:650}
+h4{font-size:1rem;margin:1.5em 0 .4em;font-weight:680}
+.lead{font-size:1.06rem;color:var(--text-muted);margin-top:.2em}
+.sec>h2+.lead{margin-top:-.1em}
+
+/* ---------- Blocs pédagogiques ---------- */
+.box{--c:var(--text-muted);--soft:var(--surface-soft);--line:var(--border);border:1px solid var(--line);border-left:4px solid var(--c);background:var(--soft);border-radius:var(--radius);padding:13px 18px 14px;margin:20px 0}
+.box>.lbl{display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:750;color:var(--c);margin-bottom:5px}
+.box>p:first-of-type{margin-top:0}
+.box>:last-child{margin-bottom:0}
+.box.def{--c:var(--accent);--soft:var(--accent-soft);--line:var(--accent-line)}
+.box.ex{--c:var(--success);--soft:var(--success-soft);--line:var(--success-line)}
+.box.key{--c:var(--retain);--soft:var(--retain-soft);--line:var(--retain-line)}
+.box.warn{--c:var(--warning);--soft:var(--warning-soft);--line:var(--warning-line)}
+.box.note{--c:var(--text-muted);--soft:var(--surface);--line:var(--border)}
+.box.key ul{margin:.3em 0}
+dfn{font-style:normal;font-weight:700;color:var(--accent-strong)}
+@media (prefers-color-scheme:dark){dfn{color:var(--accent-strong)}}
+
+/* ---------- Formules ---------- */
+.m{font-family:var(--math);font-size:1.07em;white-space:nowrap}
+.m i,.formula i{font-style:italic}
+.formula{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;justify-content:safe center;gap:12px 34px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin:18px 0;font-family:var(--math);font-size:1.32rem;line-height:1.5;overflow-x:auto}
+@media (max-width:640px){.formula{font-size:1.08rem;padding:14px 12px;gap:10px 20px}.calc{font-size:.98rem}}
+.formula.hl{border-color:var(--accent-line);box-shadow:inset 3px 0 0 var(--accent)}
+.formula .eq{white-space:nowrap}
+.formula .cap{flex-basis:100%;text-align:center;font:500 .78rem/1.3 var(--font);color:var(--text-muted);letter-spacing:.02em;margin-top:-4px}
+.formula .cap.top{order:-1;margin:0 0 -2px}
+.m small,.calc small{font-family:var(--font);font-style:normal;color:var(--text-muted);font-size:.78em}
+.formula small{font-size:.62em;font-family:var(--font);color:var(--text-muted);font-style:normal}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .12em;line-height:1.12;font-size:.92em}
+.fr>span{padding:0 .18em;white-space:nowrap}
+.fr>span:first-child{border-bottom:.075em solid currentColor;padding-bottom:.06em}
+.fr>span:last-child{padding-top:.06em}
+.rt{white-space:nowrap}
+.rt>span{border-top:.075em solid currentColor;padding:.04em .1em 0;margin-left:-.04em}
+.op{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 .08em}
+.op>b{font-weight:400;font-size:1.45em;line-height:1}
+.op>small{font-size:.58em;color:inherit;font-family:var(--math)}
+.ig{display:inline-flex;align-items:center;vertical-align:middle}
+.ig>b{font-weight:400;font-size:1.5em;line-height:1}
+.ig>span{display:inline-flex;flex-direction:column;justify-content:space-between;height:2.1em;font-size:.58em;margin-left:.02em;line-height:1}
+.vec{position:relative;display:inline-block}
+.vec::before{content:"→";position:absolute;left:0;right:0;top:-.78em;text-align:center;font-size:.62em;font-style:normal;line-height:1}
+.unit{font-family:var(--font);font-size:.82em;color:var(--text-muted);font-style:normal}
+.hat{position:relative;display:inline-block}
+.hat::before{content:"^";position:absolute;left:0;right:0;top:-.55em;text-align:center;font-size:.8em;font-style:normal}
+
+/* ---------- Tableaux ---------- */
+.tbl-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface)}
+table.tbl{border-collapse:collapse;width:100%;font-size:.93rem;line-height:1.45}
+.tbl th{background:var(--surface-soft);text-align:left;font-weight:650;padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:bottom}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:last-child td,.tbl tr:last-child th{border-bottom:0}
+.tbl td.c,.tbl th.c{text-align:center}
+.tbl td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl .m{font-size:1.1em}
+.tbl caption{caption-side:top;text-align:left;padding:10px 14px 0;font-weight:650;font-size:.92rem}
+.tbl th[scope=row]{background:transparent;font-weight:650;vertical-align:top}
+.vars{font-size:.9rem}
+.vars td:first-child{font-family:var(--math);font-style:italic;font-size:1.1em;white-space:nowrap;width:1%}
+.vars td:last-child{white-space:nowrap;color:var(--text-muted)}
+
+/* ---------- Grilles et cartes ---------- */
+.g2,.g3,.g4{display:grid;gap:14px;margin:18px 0}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px 17px}
+.card>h4:first-child,.card>.h:first-child{margin-top:0}
+.card>:last-child{margin-bottom:0}
+.card .h{font-weight:700;font-size:1rem;margin:0 0 .35em;display:flex;align-items:center;gap:8px}
+.kicker{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-faint);font-weight:700;margin-bottom:2px}
+.card ul{margin:.3em 0;padding-left:1.15em}
+.card.accent{border-top:3px solid var(--accent)}
+.card.ok{border-top:3px solid var(--success)}
+.card.bad{border-top:3px solid var(--warning)}
+.card figure{margin:10px 0 4px}
+.card svg{display:block;width:100%;height:auto}
+
+/* ---------- Faits / chiffres ---------- */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:18px 0}
+.facts>div{background:var(--surface);padding:12px 15px}
+.facts dt{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);font-weight:700}
+.facts dd{margin:3px 0 0;font-weight:600}
+.facts dd small{display:block;font-weight:400;color:var(--text-muted);font-size:.86rem}
+
+/* ---------- Chaînes / processus ---------- */
+.flow{display:flex;flex-wrap:wrap;list-style:none;padding:0;margin:18px 0;gap:0}
+.flow>li{flex:1 1 130px;position:relative;margin:0 26px 12px 0;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:11px 13px;line-height:1.35}
+.flow>li:last-child{margin-right:0}
+.flow>li:not(:last-child)::after{content:"";position:absolute;right:-21px;top:50%;width:14px;height:2px;background:var(--accent);transform:translateY(-50%)}
+.flow>li:not(:last-child)::before{content:"";position:absolute;right:-22px;top:50%;border:5px solid transparent;border-left:7px solid var(--accent);transform:translate(4px,-50%)}
+.flow b{display:block;font-size:.95rem}
+.flow small{display:block;color:var(--text-muted);font-size:.82rem;margin-top:2px}
+.flow .v{display:inline-block;margin-top:5px;font-size:.76rem;font-weight:650;color:var(--accent);background:var(--accent-soft);border-radius:99px;padding:1px 8px}
+.flow.bi>li:not(:last-child)::after{right:-22px;width:16px}
+.flow.bi>li:not(:last-child)::before{transform:translate(4px,-50%)}
+.flow.bi>li:not(:last-child)>.back{position:absolute;right:-27px;top:50%;border:5px solid transparent;border-right:7px solid var(--accent);transform:translate(-11px,-50%)}
+@media (max-width:640px){
+  .flow{flex-direction:column}
+  .flow>li{margin:0 0 24px 0;flex-basis:auto}
+  .flow>li:last-child{margin-bottom:0}
+  .flow>li:not(:last-child)::after{right:auto;left:28px;top:auto;bottom:-20px;width:2px;height:14px;transform:none}
+  .flow>li:not(:last-child)::before{right:auto;left:24px;top:auto;bottom:-24px;border:5px solid transparent;border-top:7px solid var(--accent);transform:none}
+  .flow.bi>li:not(:last-child)>.back{right:auto;left:24px;top:auto;bottom:-14px;border:5px solid transparent;border-bottom:7px solid var(--accent);transform:translateY(-10px)}
+}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0}
+.tag{font-size:.76rem;font-weight:600;padding:2px 10px;border-radius:99px;background:var(--surface-soft);color:var(--text-muted);border:1px solid var(--border);white-space:nowrap}
+.tag.a{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
+.tag.g{background:var(--success-soft);color:var(--success);border-color:var(--success-line)}
+.tag.w{background:var(--warning-soft);color:var(--warning);border-color:var(--warning-line)}
+
+/* ---------- Figures ---------- */
+figure{margin:0}
+.fig{margin:20px 0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.fig svg{display:block;width:100%;height:auto;max-width:var(--w,560px);margin:0 auto}
+.fig figcaption,.card figcaption{font-size:.83rem;color:var(--text-muted);margin-top:10px;text-align:center;line-height:1.4}
+.fig .img{background:#fff;border-radius:6px;padding:6px;border:1px solid var(--border)}
+.fig img{display:block;max-width:100%;height:auto;margin:0 auto}
+.fig .scroll{overflow-x:auto}
+.fig .scroll img{min-width:680px}
+.fig-row{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));margin:20px 0}
+.fig-row .fig{margin:0}
+svg text{fill:var(--text);font-family:var(--font);font-size:13px}
+svg .mt{font-family:var(--math);font-style:italic;font-size:15px}
+svg .sm{font-size:11px}
+svg .mut{fill:var(--text-muted)}
+svg .ink{stroke:var(--fig-ink);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+svg .thin{stroke-width:1}
+svg .axis{stroke:var(--fig-ink);stroke-width:1.2;fill:none}
+svg .grid{stroke:var(--border-strong);stroke-width:.8;fill:none}
+svg .dash{stroke-dasharray:4 4}
+svg .soft{stroke:var(--fig-soft)}
+svg .box{fill:var(--surface);stroke:var(--fig-ink);stroke-width:1.6}
+svg .boxs{fill:var(--fig-fill);stroke:var(--fig-ink);stroke-width:1.2}
+svg .dot{fill:var(--fig-ink)}
+svg .hollow{fill:var(--surface);stroke:var(--fig-ink);stroke-width:1.4}
+svg .wu{stroke:var(--u);fill:none;stroke-width:2.2;stroke-linejoin:round}
+svg .wi{stroke:var(--i);fill:none;stroke-width:2.2;stroke-linejoin:round}
+svg .w1{stroke:var(--ph1);fill:none;stroke-width:2;stroke-linejoin:round}
+svg .w2{stroke:var(--ph2);fill:none;stroke-width:2;stroke-linejoin:round}
+svg .w3{stroke:var(--ph3);fill:none;stroke-width:2;stroke-linejoin:round}
+svg .wa{stroke:var(--accent);fill:none;stroke-width:2;stroke-linejoin:round}
+svg .tu{fill:var(--u)} svg .ti{fill:var(--i)} svg .t1{fill:var(--ph1)} svg .t2{fill:var(--ph2)} svg .t3{fill:var(--ph3)} svg .ta{fill:var(--accent)}
+svg .fu{fill:var(--u);fill-opacity:.14} svg .fi{fill:var(--i);fill-opacity:.14} svg .fa{fill:var(--accent);fill-opacity:.12}
+svg .mk{fill:var(--fig-ink)} svg .mk-u{fill:var(--u)} svg .mk-i{fill:var(--i)} svg .mk-a{fill:var(--accent)}
+svg .mk-1{fill:var(--ph1)} svg .mk-2{fill:var(--ph2)} svg .mk-3{fill:var(--ph3)}
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px;font-size:.82rem;color:var(--text-muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:16px;height:3px;border-radius:2px;background:var(--c)}
+
+/* ---------- Exercices et corrections ---------- */
+.exo{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin:22px 0}
+.exo>.lbl{display:flex;align-items:center;gap:10px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:750;color:var(--success);margin-bottom:6px}
+.exo>.lbl::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--success)}
+.exo>p:first-of-type{margin-top:0}
+.exo ol.q{padding-left:1.4em}
+.exo ol.q>li{margin:.35em 0}
+.qcm{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px;padding:0;list-style:none}
+.qcm li{margin:0;border:1px solid var(--border);border-radius:8px;padding:4px 11px;font-size:.92rem;background:var(--surface)}
+.qcm li.ok{border-color:var(--success);background:var(--success-soft);color:var(--success);font-weight:650}
+.qcm li.ok::before{content:"✓ "}
+details.sol{margin:14px 0 2px;border:1px solid var(--success-line);border-radius:9px;background:var(--surface)}
+details.sol>summary{cursor:pointer;padding:9px 14px;font-weight:650;font-size:.92rem;color:var(--success);list-style:none;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+details.sol>summary::-webkit-details-marker{display:none}
+details.sol>summary::before{content:"";flex:none;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin-right:2px}
+details.sol[open]>summary::before{transform:rotate(45deg)}
+details.sol>.body{padding:6px 18px 14px;border-top:1px solid var(--border)}
+details.sol.prop{border-color:var(--warning-line)}
+details.sol.prop>summary{color:var(--warning)}
+details.sol .tag{font-weight:600}
+.calc{font-family:var(--math);font-size:1.08rem;line-height:1.9}
+.calc .eq{display:block}
+.res{font-weight:700;color:var(--success)}
+details.demo{margin:16px 0;border:1px solid var(--border);border-radius:9px;background:var(--surface)}
+details.demo>summary{cursor:pointer;padding:9px 14px;font-weight:650;font-size:.92rem;color:var(--accent);list-style:none;display:flex;align-items:center;gap:8px}
+details.demo>summary::-webkit-details-marker{display:none}
+details.demo>summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s}
+details.demo[open]>summary::before{transform:rotate(45deg)}
+details.demo>.body{padding:6px 18px 16px;border-top:1px solid var(--border)}
+
+/* ---------- Graphiques en barres ---------- */
+.chart ul.bars{list-style:none;margin:10px 0 0;padding:0}
+.charts{display:grid;gap:14px;margin:18px 0;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
+.charts .chart{margin:0}
+.bars li{display:grid;grid-template-columns:minmax(92px,38%) 1fr 3.6em;align-items:center;gap:10px;margin:0;padding:3px 0;font-size:.88rem}
+.bars .lab{color:var(--text);line-height:1.2}
+.bars .trk{height:12px;background:var(--surface-soft);border-radius:2px;position:relative}
+.bars .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--text-muted);font-weight:600}
+.bars .bar{position:absolute;left:0;top:0;bottom:0;width:var(--v);background:var(--accent);border-radius:0 4px 4px 0;min-width:2px}
+.chart .h{font-weight:700;margin:0;font-size:.98rem}
+.chart .sub{font-size:.8rem;color:var(--text-muted);margin:2px 0 0}
+.chart .src{font-size:.75rem;color:var(--text-faint);margin:10px 0 0}
+
+/* ---------- Chips de domaines de tension ---------- */
+.chip{display:inline-block;min-width:3.2em;text-align:center;font-weight:750;font-size:.82rem;padding:2px 8px;border-radius:6px;color:#fff;letter-spacing:.03em}
+.chip.tbt{background:var(--tbt);color:#2a2100}
+.chip.bt{background:var(--bt)}
+.chip.hta{background:var(--hta)}
+.chip.htb{background:var(--htb)}
+@media (prefers-color-scheme:dark){.chip.bt,.chip.hta,.chip.htb{color:#0e1116}}
+
+/* ---------- Divers ---------- */
+.muted{color:var(--text-muted)}
+.small{font-size:.88rem}
+.nowrap{white-space:nowrap}
+.src-note{font-size:.8rem;color:var(--text-faint)}
+hr.soft{border:0;border-top:1px solid var(--border);margin:28px 0}
+.foot{margin-top:70px;padding-top:18px;border-top:1px solid var(--border);font-size:.82rem;color:var(--text-faint)}
+.foot a{color:var(--text-muted)}
+
+@media print{
+  body{background:#fff;font-size:11pt}
+  .toc,.chapnav,.btn{display:none!important}
+  .layout{display:block;padding:0}
+  .head{border:0}
+  .sec+.sec{break-before:auto}
+  .box,.fig,.exo,.card,.formula,.tbl-wrap,details{break-inside:avoid}
+  a{color:inherit;text-decoration:none}
+}
+
+/* ---------- Figure + texte côte à côte ---------- */
+.side{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:8px 22px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin:14px 0}
+.side svg{display:block;width:100%;height:auto;max-width:360px;margin:0 auto}
+.side .txt>:first-child{margin-top:0}.side .txt>:last-child{margin-bottom:0}
+.side .h{font-weight:700;margin:0 0 .3em}
+@media (max-width:640px){.side{grid-template-columns:1fr}}
+
+.rel{display:grid;grid-template-columns:repeat(2,minmax(0,max-content));gap:6px 26px;font-family:var(--math);font-size:1.12rem;margin:10px 0 0;align-items:center}
+.rel span{white-space:nowrap}
+
+/* ---------- Spécifique au chapitre 2 ---------- */
+.part{display:flex;align-items:center;gap:12px;margin:0 0 6px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:750;color:var(--text-faint)}
+.part::after{content:"";flex:1;height:1px;background:var(--border)}
+.mini{display:block;width:100%;height:auto}
+.rlc .card .m{font-size:1.05rem}
+.phi{display:inline-block;font-weight:700;font-family:var(--math);font-size:1.15rem;color:var(--accent)}
+.fres svg{width:70px;height:46px;display:block;margin:0 auto}
+.sym svg{width:110px;height:42px;display:block;margin:0 auto}
+.osc{max-width:340px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path class="mk" d="M0,1.2 L10,5 L0,8.8 Z"/></marker>
+    <marker id="ah-u" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path class="mk-u" d="M0,1.2 L10,5 L0,8.8 Z"/></marker>
+    <marker id="ah-i" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path class="mk-i" d="M0,1.2 L10,5 L0,8.8 Z"/></marker>
+    <marker id="ah-a" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path class="mk-a" d="M0,1.2 L10,5 L0,8.8 Z"/></marker>
+    <marker id="ah-1" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path class="mk-1" d="M0,1.2 L10,5 L0,8.8 Z"/></marker>
+    <marker id="ah-2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path class="mk-2" d="M0,1.2 L10,5 L0,8.8 Z"/></marker>
+    <marker id="ah-3" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path class="mk-3" d="M0,1.2 L10,5 L0,8.8 Z"/></marker>
+  </defs>
+</svg>
+
+<header class="head">
+  <div class="wrap">
+    <div class="eyebrow">EC03 · Réseaux locaux industriels (RLI) · Réseaux électriques</div>
+    <h1><span class="chapno">2</span>Circuits monophasés et triphasés</h1>
+    <p class="subtitle">Conversion courants et tensions : régime continu, régime sinusoïdal monophasé, régime sinusoïdal triphasé.</p>
+    <nav class="chapnav" aria-label="Chapitres">
+      <a href="rli-chapitre-1-reseaux-electriques.html">← Chapitre 1 · Caractéristiques des réseaux électriques</a>
+      <a class="cur" href="rli-chapitre-2-circuits-monophases-triphases.html" aria-current="page">Chapitre 2 · Circuits monophasés et triphasés</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap layout">
+<nav class="toc" aria-label="Sommaire">
+  <p class="ttl">Sommaire</p>
+  <ol>
+    <li><a href="#cc-ca"><span class="n">0</span>Continu ou alternatif ?</a></li>
+    <li><a href="#continu"><span class="n">1</span>Régime continu</a>
+      <ol>
+        <li><a href="#charge">1.1 Charge et courant</a></li>
+        <li><a href="#tension">1.2 Tension et conventions</a></li>
+        <li><a href="#puissance">1.3 Puissance électrique</a></li>
+        <li><a href="#dipoles">1.4 Dipôles passifs</a></li>
+        <li><a href="#joule">1.5 Effet Joule</a></li>
+        <li><a href="#resistances">1.6 Association de résistances</a></li>
+        <li><a href="#moteur">1.7 Exercice : moteur</a></li>
+      </ol>
+    </li>
+    <li><a href="#mono"><span class="n">2</span>Sinusoïdal monophasé</a>
+      <ol>
+        <li><a href="#intro-sin">2.1 Grandeurs périodiques</a></li>
+        <li><a href="#monophase">2.2 Le monophasé</a></li>
+        <li><a href="#valeurs">2.3 Valeurs moyenne et efficace</a></li>
+        <li><a href="#dephasage">2.4 Déphasage selon la charge</a></li>
+        <li><a href="#impedances">2.5 Résumé et impédances</a></li>
+        <li><a href="#puissances">2.6 Puissances</a></li>
+        <li><a href="#boucherot">2.7 Théorème de Boucherot</a></li>
+      </ol>
+    </li>
+    <li><a href="#tri"><span class="n">3</span>Sinusoïdal triphasé</a>
+      <ol>
+        <li><a href="#tensions-tri">3.1 Tensions simples et composées</a></li>
+        <li><a href="#recepteurs">3.2 Récepteurs triphasés</a></li>
+        <li><a href="#couplages">3.3 Couplages étoile et triangle</a></li>
+        <li><a href="#puissances-tri">3.4 Puissances en triphasé</a></li>
+        <li><a href="#exemple-tri">3.5 Exemple : moteur triphasé</a></li>
+      </ol>
+    </li>
+  </ol>
+  <div class="tools"><button class="btn" id="toggle-sol" type="button">Déplier toutes les corrections</button></div>
+</nav>
+
+<main>
+
+<!-- ============================================================ 0 -->
+<section class="sec" id="cc-ca">
+  <h2><span class="n">0</span>Courant continu ou courant alternatif ?</h2>
+  <div class="g2">
+    <div class="card">
+      <div class="kicker">CC · DC (Direct Current)</div>
+      <p class="h">Courant continu</p>
+      <svg class="mini" viewBox="0 0 220 96" role="img" aria-label="Courant continu : intensité constante dans le temps">
+        <path class="axis" d="M24,86 H206 M24,86 V10" /><path class="axis" d="M200,82 L206,86 L200,90 M20,16 L24,10 L28,16"/>
+        <path class="wa" d="M24,40 H196"/>
+        <text class="mt" x="30" y="20">i</text><text class="mt" x="198" y="78">t</text>
+      </svg>
+      <p>Les électrons (charge <span class="m"><i>q</i> = −<i>e</i> ≈ −1,6 × 10<sup>−19</sup> C</span>) circulent continuellement <strong>dans la même direction</strong>, du pôle négatif vers le pôle positif.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">CA · AC (Alternating Current)</div>
+      <p class="h">Courant alternatif</p>
+      <svg class="mini" viewBox="0 0 220 96" role="img" aria-label="Courant alternatif : intensité qui change de signe périodiquement">
+        <path class="axis" d="M24,52 H206 M24,92 V10"/><path class="axis" d="M200,48 L206,52 L200,56 M20,16 L24,10 L28,16"/>
+        <path class="wa" d="M24.0,52.0 L27.2,44.6 L30.4,37.6 L33.7,31.4 L36.9,26.3 L40.1,22.6 L43.3,20.5 L46.6,20.1 L49.8,21.3 L53.0,24.3 L56.2,28.7 L59.4,34.4 L62.7,41.1 L65.9,48.3 L69.1,55.7 L72.3,62.9 L75.6,69.6 L78.8,75.3 L82.0,79.7 L85.2,82.7 L88.4,83.9 L91.7,83.5 L94.9,81.4 L98.1,77.7 L101.3,72.6 L104.6,66.4 L107.8,59.4 L111.0,52.0 L114.2,44.6 L117.4,37.6 L120.7,31.4 L123.9,26.3 L127.1,22.6 L130.3,20.5 L133.6,20.1 L136.8,21.3 L140.0,24.3 L143.2,28.7 L146.4,34.4 L149.7,41.1 L152.9,48.3 L156.1,55.7 L159.3,62.9 L162.6,69.6 L165.8,75.3 L169.0,79.7 L172.2,82.7 L175.4,83.9 L178.7,83.5 L181.9,81.4 L185.1,77.7 L188.3,72.6 L191.6,66.4 L194.8,59.4 L198.0,52.0"/>
+        <text class="mt" x="30" y="20">i</text><text class="mt" x="198" y="44">t</text>
+      </svg>
+      <p>Les électrons circulent de manière alternative <strong>dans les deux sens</strong> du circuit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 1 -->
+<section class="sec" id="continu">
+  <p class="part">Partie 1</p>
+  <h2><span class="n">1</span>Régime continu</h2>
+  <div class="box def">
+    <span class="lbl">Courant continu</span>
+    <p>En régime continu, les <strong>courants</strong> et les <strong>tensions</strong> sont <strong>constants dans le temps</strong>.</p>
+  </div>
+
+  <h3 id="charge"><span class="n">1.1</span>Charge et courant électrique</h3>
+  <h4>Capacité (en coulombs ou en ampères-heures)</h4>
+  <p>La <dfn>capacité</dfn> est la charge maximale pouvant être fournie par l'accumulateur ou la pile ; autrement dit, la quantité d'électricité débitée par le courant pendant une durée.</p>
+  <div class="formula hl">
+    <span class="eq"><i>q</i> = <i>i</i> · <i>t</i></span>
+  </div>
+  <div class="tbl-wrap">
+    <table class="tbl vars">
+      <thead><tr><th>Symbole</th><th>Signification</th><th>Unité</th></tr></thead>
+      <tbody>
+        <tr><td>q</td><td>Quantité d'électricité (capacité)</td><td>coulomb (C) ou ampère-heure (Ah)</td></tr>
+        <tr><td>i</td><td>Intensité du courant</td><td>ampère (A)</td></tr>
+        <tr><td>t</td><td>Durée</td><td>seconde (s) ou heure (h)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Notion de courant électrique</h4>
+  <div class="box def">
+    <span class="lbl">Définition</span>
+    <p>Le déplacement des électrons libres dans un circuit électrique <strong>fermé</strong> engendre ce qu'on appelle un <dfn>courant électrique</dfn>. Un courant (déplacement de porteurs de charges) ne peut s'établir que dans un circuit fermé. Son unité est l'<strong>ampère (A)</strong>.</p>
+  </div>
+  <div class="formula hl">
+    <span class="eq"><i>i</i> = <span class="fr"><span><i>q</i></span><span><i>t</i></span></span> = <span class="fr"><span>d<i>q</i></span><span>d<i>t</i></span></span></span>
+  </div>
+  <div class="tbl-wrap">
+    <table class="tbl vars">
+      <thead><tr><th>Symbole</th><th>Signification</th><th>Unité</th></tr></thead>
+      <tbody>
+        <tr><td>i</td><td>Courant électrique traversant le récepteur</td><td>A</td></tr>
+        <tr><td>dq</td><td>Variation de la quantité d'électricité</td><td>C</td></tr>
+        <tr><td>dt</td><td>Variation du temps</td><td>s</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <figure class="fig" style="--w:380px">
+    <svg viewBox="0 0 350 156" role="img" aria-label="Circuit fermé : un générateur de tension U_G alimente un récepteur R à travers un interrupteur ; la tension aux bornes du récepteur est U_R = U_AB">
+      <path class="ink" d="M60,30 H150 M168,30 H240 V120 H60 V30"/>
+      <rect x="148" y="24" width="22" height="12" fill="var(--surface)"/>
+      <path class="ink" d="M146,30 L166,18"/><circle class="dot" cx="146" cy="30" r="2.2"/><circle class="dot" cx="170" cy="30" r="2.2"/>
+      <text x="158" y="12" text-anchor="middle" class="sm mut">interrupteur</text>
+      <circle class="hollow" cx="60" cy="75" r="16"/><path class="ink" d="M60,59 V91"/>
+      <path class="wu" d="M32,100 V52" marker-end="url(#ah-u)"/><text class="mt" x="8" y="80">U<tspan dy="4" font-size="11">G</tspan></text>
+      <path class="wi" d="M88,30 H118" marker-end="url(#ah-i)"/><text class="mt" x="98" y="22">i</text>
+      <rect class="box" x="233" y="56" width="14" height="38" rx="1"/>
+      <circle class="dot" cx="240" cy="30" r="2.6"/><circle class="dot" cx="240" cy="120" r="2.6"/>
+      <text x="248" y="26" class="sm">A</text><text x="248" y="136" class="sm">B</text>
+      <path class="wu" d="M266,100 V52" marker-end="url(#ah-u)"/><text class="mt" x="274" y="80">U<tspan dy="4" font-size="11">R</tspan><tspan dy="-4"> = U</tspan><tspan dy="4" font-size="11">AB</tspan></text>
+      <text x="60" y="148" text-anchor="middle" class="sm mut">générateur (G)</text>
+      <text x="240" y="148" text-anchor="middle" class="sm mut">récepteur (R)</text>
+    </svg>
+    <figcaption>Circuit fermé : le générateur G fait circuler le courant <span class="m"><i>i</i></span> dans le récepteur R.</figcaption>
+  </figure>
+
+  <h4>Trois situations à distinguer</h4>
+  <div class="g3">
+    <figure class="card">
+      <p class="h">Circuit ouvert (à vide)</p>
+      <svg class="mini" viewBox="0 0 200 124" role="img" aria-label="Circuit ouvert : interrupteur ouvert, courant nul, la tension est la tension à vide U0">
+        <path class="ink" d="M44,24 H92 M112,24 H170 V104 H44 V24"/><path class="ink" d="M92,24 L110,13"/>
+        <circle class="hollow" cx="44" cy="64" r="14"/><path class="ink" d="M44,50 V78"/>
+        <rect class="box" x="163" y="48" width="14" height="32"/>
+        <path class="wu" d="M20,86 V44" marker-end="url(#ah-u)"/>
+        <text class="mt" x="60" y="16" style="font-size:13px">I = 0</text>
+      </svg>
+      <p class="m"><i>I</i> = 0 ; <i>U</i> = <i>U</i><sub>0</sub> <span class="unit">(tension à vide)</span></p>
+    </figure>
+    <figure class="card">
+      <p class="h">Circuit fermé</p>
+      <svg class="mini" viewBox="0 0 200 124" role="img" aria-label="Circuit fermé : le courant est non nul">
+        <path class="ink" d="M44,24 H170 V104 H44 V24"/>
+        <circle class="hollow" cx="44" cy="64" r="14"/><path class="ink" d="M44,50 V78"/>
+        <rect class="box" x="163" y="48" width="14" height="32"/>
+        <path class="wi" d="M76,24 H104" marker-end="url(#ah-i)"/>
+        <path class="wu" d="M20,86 V44" marker-end="url(#ah-u)"/>
+        <text class="mt" x="112" y="16" style="font-size:13px">I ≠ 0</text>
+      </svg>
+      <p class="m"><i>I</i> ≠ 0</p>
+    </figure>
+    <figure class="card">
+      <p class="h">Court-circuit</p>
+      <svg class="mini" viewBox="0 0 200 124" role="img" aria-label="Court-circuit : les bornes du générateur sont reliées sans récepteur, la tension est nulle et le courant vaut Icc">
+        <path class="ink" d="M44,24 H170 V104 H44 V24"/>
+        <circle class="hollow" cx="44" cy="64" r="14"/><path class="ink" d="M44,50 V78"/>
+        <path class="wi" d="M76,24 H104" marker-end="url(#ah-i)"/>
+        <path class="wu" d="M20,86 V44" marker-end="url(#ah-u)"/>
+        <text class="mt" x="112" y="16" style="font-size:13px">I = I<tspan dy="3" font-size="10">cc</tspan></text>
+      </svg>
+      <p class="m"><i>U</i><sub>cc</sub> = 0 V ; <i>I</i> = <i>I</i><sub>cc</sub></p>
+    </figure>
+  </div>
+  <div class="box warn">
+    <span class="lbl">Danger</span>
+    <p>Le court-circuit est un cas particulier : <strong>à ne pas faire</strong>.</p>
+  </div>
+  <div class="box key">
+    <span class="lbl">À retenir</span>
+    <ul>
+      <li>Par convention, le courant <strong>sort de la borne (+)</strong> du générateur ; ce sens est opposé au sens réel de déplacement des électrons.</li>
+      <li>L'intensité s'exprime en <strong>ampères (A)</strong>. C'est une grandeur algébrique, mesurée par un <strong>ampèremètre branché en série</strong> dans le circuit.</li>
+    </ul>
+  </div>
+
+  <h3 id="tension"><span class="n">1.2</span>Différence de potentiel (tension) et conventions</h3>
+  <div class="box def">
+    <span class="lbl">Définition</span>
+    <p>Pour un dipôle AB, la <dfn>tension</dfn> entre A et B (ou différence de potentiel entre A et B) est égale au potentiel électrique du point A moins le potentiel électrique du point B. Elle s'exprime en <strong>volts (V)</strong>, est une grandeur algébrique et se mesure avec un <strong>voltmètre monté en parallèle</strong>.</p>
+  </div>
+  <div class="formula hl">
+    <span class="eq"><i>U</i><sub>AB</sub> = <i>V</i><sub>A</sub> − <i>V</i><sub>B</sub></span>
+    <span class="eq"><i>U</i><sub>BA</sub> = −<i>U</i><sub>AB</sub></span>
+  </div>
+  <div class="fig-row">
+    <figure class="fig">
+      <svg viewBox="0 0 260 104" style="max-width:300px" role="img" aria-label="Dipôle AB : la flèche de U_AB pointe vers A ; U_BA est de sens opposé">
+        <path class="ink" d="M30,52 H105 M155,52 H230"/><rect class="box" x="105" y="44" width="50" height="16"/>
+        <circle class="dot" cx="30" cy="52" r="2.6"/><circle class="dot" cx="230" cy="52" r="2.6"/>
+        <text x="16" y="57">A</text><text x="236" y="57">B</text>
+        <path class="wu" d="M168,26 H92" marker-end="url(#ah-u)"/><text class="mt" x="120" y="18">U<tspan dy="4" font-size="11">AB</tspan></text>
+        <path class="ink" d="M92,78 H168" marker-end="url(#ah)"/><text class="mt" x="96" y="98">U<tspan dy="4" font-size="11">BA</tspan><tspan dy="-4"> = −U</tspan><tspan dy="4" font-size="11">AB</tspan></text>
+      </svg>
+      <figcaption>Tension aux bornes d'un dipôle AB.</figcaption>
+    </figure>
+    <figure class="fig">
+      <svg viewBox="0 0 300 150" style="max-width:320px" role="img" aria-label="Mesures : ampèremètre en série dans la boucle, voltmètre en parallèle sur la charge">
+        <path class="ink" d="M40,30 H107 M133,30 H200 V120 H40 V30 M200,30 H260 V60 M260,84 V120 H200"/>
+        <circle class="hollow" cx="40" cy="75" r="14"/><path class="ink" d="M40,61 V89"/>
+        <circle class="hollow" cx="120" cy="30" r="13"/><text x="120" y="35" text-anchor="middle" style="font-weight:600">A</text>
+        <circle class="hollow" cx="260" cy="72" r="13"/><text x="260" y="77" text-anchor="middle" style="font-weight:600">V</text>
+        <rect class="box" x="193" y="57" width="14" height="32"/>
+        <path class="wi" d="M60,30 H88" marker-end="url(#ah-i)"/>
+        <text x="120" y="60" text-anchor="middle" class="sm mut">en série</text>
+        <text x="260" y="142" text-anchor="middle" class="sm mut">en parallèle</text>
+        <text x="40" y="142" text-anchor="middle" class="sm mut">source</text><text x="178" y="76" text-anchor="end" class="sm mut">charge</text>
+      </svg>
+      <figcaption>Ampèremètre en série, voltmètre en parallèle.</figcaption>
+    </figure>
+  </div>
+
+  <h4>Conventions d'orientation des dipôles</h4>
+  <p>Dans les deux conventions, la tension et le courant sont tous deux considérés positifs ; seule l'orientation relative des flèches change.</p>
+  <div class="g2">
+    <figure class="card">
+      <p class="h">Convention générateur</p>
+      <svg class="mini" viewBox="0 0 220 90" role="img" aria-label="Convention générateur : flèches de U et de I dans le même sens">
+        <path class="ink" d="M20,50 H96 M124,50 H200"/><circle class="hollow" cx="110" cy="50" r="14"/><path class="ink" d="M96,50 H124"/>
+        <path class="wu" d="M146,22 H74" marker-end="url(#ah-u)"/><text class="mt" x="104" y="16">U</text>
+        <path class="wi" d="M182,50 H150" marker-end="url(#ah-i)"/><text class="mt" x="164" y="70">I</text>
+      </svg>
+      <p><span class="m"><i>U</i></span> et <span class="m"><i>I</i></span> sont de <strong>même sens</strong>.</p>
+    </figure>
+    <figure class="card">
+      <p class="h">Convention récepteur</p>
+      <svg class="mini" viewBox="0 0 220 90" role="img" aria-label="Convention récepteur : flèches de U et de I de sens contraires">
+        <path class="ink" d="M20,40 H85 M135,40 H200"/><rect class="box" x="85" y="32" width="50" height="16"/>
+        <path class="wi" d="M34,40 H66" marker-end="url(#ah-i)"/><text class="mt" x="44" y="30">I</text>
+        <path class="wu" d="M146,70 H74" marker-end="url(#ah-u)"/><text class="mt" x="104" y="88">U</text>
+      </svg>
+      <p><span class="m"><i>U</i></span> et <span class="m"><i>I</i></span> sont de <strong>sens contraires</strong>.</p>
+    </figure>
+  </div>
+
+  <h3 id="puissance"><span class="n">1.3</span>Puissance électrique</h3>
+  <p>En physique, une puissance représente une <strong>quantité d'énergie par unité de temps</strong> : un système qui fournit beaucoup de puissance fournit beaucoup d'énergie (en joules) par seconde. L'unité est le watt : <span class="m">1 W = 1 J/s</span>.</p>
+  <p>Pour mesurer la puissance consommée ou fournie par un dipôle, il n'existe qu'un seul type d'appareil : le <strong>wattmètre</strong>. Il se symbolise par la lettre W et comporte <strong>4 bornes</strong>.</p>
+  <figure class="fig" style="--w:440px">
+    <svg viewBox="0 0 360 128" role="img" aria-label="Wattmètre : deux bornes pour le circuit courant, en série, et deux bornes pour le circuit tension, en parallèle">
+      <path class="ink" d="M44,44 H164 M196,44 H316 M172,58 V92 M188,58 V92"/>
+      <circle class="hollow" cx="40" cy="44" r="4"/><circle class="hollow" cx="320" cy="44" r="4"/>
+      <circle class="hollow" cx="172" cy="96" r="4"/><circle class="hollow" cx="188" cy="96" r="4"/>
+      <circle class="hollow" cx="180" cy="44" r="16"/><text x="180" y="49.5" text-anchor="middle" style="font-weight:600;font-size:14px">W</text>
+      <path class="wi" d="M76,44 H112" marker-end="url(#ah-i)"/><text class="mt" x="90" y="36">I</text>
+      <path class="wu" d="M196,108 H164" marker-end="url(#ah-u)"/><text class="mt" x="200" y="114">U</text>
+      <text x="40" y="24" class="sm mut">entrée « courant »</text>
+      <text x="320" y="24" text-anchor="end" class="sm mut">sortie « courant »</text>
+      <text x="150" y="124" text-anchor="end" class="sm mut">circuit « tension »</text>
+    </svg>
+    <figcaption>Le circuit « courant » se branche en série, le circuit « tension » en parallèle sur la charge.</figcaption>
+  </figure>
+  <div class="formula hl">
+    <span class="cap top">Puissance en régime continu</span>
+    <span class="eq"><i>P</i> = <i>U</i> · <i>I</i></span>
+    <span class="cap"><span class="m"><i>P</i></span> en W, <span class="m"><i>U</i></span> en V, <span class="m"><i>I</i></span> en A</span>
+  </div>
+
+  <h3 id="dipoles"><span class="n">1.4</span>Dipôles passifs</h3>
+  <div class="g2">
+    <div class="box def" style="margin:0">
+      <span class="lbl">Dipôle passif</span>
+      <p>Dipôle qui <strong>consomme</strong> de l'énergie électrique et la transforme en chaleur. Exemples : résistance, ampoule…</p>
+      <p>C'est un récepteur de puissance : sa caractéristique <span class="m"><i>U</i> = <i>f</i>(<i>I</i>)</span> passe par l'origine (<span class="m"><i>U</i> = 0 V ; <i>I</i> = 0 A</span>).</p>
+    </div>
+    <div class="box note" style="margin:0">
+      <span class="lbl">Dipôle actif</span>
+      <p>Dans le cas contraire, on parle de dipôle actif. Exemples : pile, générateur électrique à courant continu…</p>
+    </div>
+  </div>
+
+  <h4>Dipôles passifs non linéaires</h4>
+  <p>La caractéristique <span class="m"><i>U</i> = <i>f</i>(<i>I</i>)</span> n'est <strong>pas une droite</strong>.</p>
+  <div class="g2">
+    <figure class="card">
+      <p class="h">Non linéaire symétrique · ampoule</p>
+      <svg class="mini" viewBox="0 0 200 140" role="img" aria-label="Caractéristique d'une ampoule : courbe symétrique par rapport à l'origine">
+        <path class="axis" d="M18,70 H190 M100,134 V6"/><path class="axis" d="M184,66 L190,70 L184,74 M96,12 L100,6 L104,12"/>
+        <path class="wu" d="M25.0,125.0 L32.5,112.2 L40.0,101.6 L47.5,93.2 L55.0,86.5 L62.5,81.4 L70.0,77.6 L77.5,74.8 L85.0,72.8 L92.5,71.3 L100.0,70.0 L107.5,68.7 L115.0,67.2 L122.5,65.2 L130.0,62.4 L137.5,58.6 L145.0,53.5 L152.5,46.8 L160.0,38.4 L167.5,27.8 L175.0,15.0"/>
+        <text class="mt" x="106" y="16">U</text><text class="mt" x="182" y="88">I</text><text class="mt" x="88" y="86" style="font-size:12px">0</text>
+      </svg>
+      <figcaption>La courbe <span class="m"><i>U</i> = <i>f</i>(<i>I</i>)</span> est symétrique par rapport à l'origine.</figcaption>
+    </figure>
+    <figure class="card">
+      <p class="h">Non linéaire non symétrique · diode</p>
+      <svg class="mini" viewBox="0 0 200 140" role="img" aria-label="Caractéristique d'une diode : courbe non symétrique par rapport à l'origine">
+        <path class="axis" d="M18,70 H190 M100,134 V6"/><path class="axis" d="M184,66 L190,70 L184,74 M96,12 L100,6 L104,12"/>
+        <path class="wu" d="M99.2,124.0 L99.6,90.0 L100.0,70.0 L101.9,62.8 L103.8,57.0 L105.6,52.4 L107.5,48.6 L109.4,45.5 L111.2,42.9 L113.1,40.8 L115.0,39.1 L118.8,36.5 L122.5,34.6 L126.2,33.1 L130.0,32.0 L135.6,30.6 L141.2,29.5 L148.8,28.1 L156.2,26.9 L163.8,25.6 L175.0,23.8"/>
+        <text class="mt" x="106" y="16">U</text><text class="mt" x="182" y="88">I</text><text class="mt" x="88" y="86" style="font-size:12px">0</text>
+      </svg>
+      <figcaption>La courbe <span class="m"><i>U</i> = <i>f</i>(<i>I</i>)</span> n'est pas symétrique par rapport à l'origine.</figcaption>
+    </figure>
+  </div>
+
+  <h4>Dipôles passifs linéaires : la résistance</h4>
+  <p>La caractéristique <span class="m"><i>U</i> = <i>f</i>(<i>I</i>)</span> est une <strong>droite qui passe par l'origine</strong>. Une droite étant caractérisée par sa pente, on retrouve la résistance (<strong>loi d'Ohm</strong>). Les dipôles passifs linéaires sont donc les <strong>résistances</strong> et les <strong>conducteurs ohmiques</strong>.</p>
+  <div class="side">
+    <svg viewBox="0 0 220 150" role="img" aria-label="Caractéristique d'une résistance : droite passant par l'origine, de pente R = U/I">
+      <path class="axis" d="M14,96 H206 M60,146 V8"/><path class="axis" d="M200,92 L206,96 L200,100 M56,14 L60,8 L64,14"/>
+      <path class="wu" d="M20,128 L196,18"/>
+      <path class="ink thin dash" d="M60,47 H138.4 V96"/>
+      <text class="mt" x="68" y="18">U(V)</text><text class="mt" x="172" y="114">I(A)</text>
+      <text class="mt" x="44" y="52">U</text><text class="mt" x="134" y="114">I</text>
+      <text class="mt" x="104" y="68" transform="rotate(-32 104 68)" style="font-size:13px">R = U/I</text>
+      <text class="mt" x="48" y="112" style="font-size:12px">0</text>
+    </svg>
+    <div class="txt">
+      <div class="formula hl" style="margin-top:0">
+        <span class="eq"><i>U</i> = <i>R</i> · <i>I</i></span>
+        <span class="eq"><i>R</i> = <span class="fr"><span><i>ρ</i> · ℓ</span><span><i>S</i></span></span></span>
+      </div>
+      <table class="tbl vars" style="font-size:.86rem">
+        <tbody>
+          <tr><td>R</td><td>Résistance</td><td>Ω</td></tr>
+          <tr><td>ρ</td><td>Résistivité électrique du conducteur</td><td>Ω·m</td></tr>
+          <tr><td>ℓ</td><td>Longueur</td><td>m</td></tr>
+          <tr><td>S</td><td>Section</td><td>m²</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="card"><p class="h">Résistance</p><p class="small muted">Valeur fixe.</p></div>
+    <div class="card"><p class="h">Potentiomètre</p><p class="small muted">Résistance réglable.</p></div>
+    <div class="card"><p class="h">Rhéostat</p><p class="small muted">Résistance de puissance réglable.</p></div>
+  </div>
+  <div class="box note">
+    <span class="lbl">Remarque · conductance</span>
+    <p>La <dfn>conductance</dfn> est l'inverse de la résistance : <span class="m"><i>G</i> = <span class="fr"><span>1</span><span><i>R</i></span></span></span>, exprimée en Ω<sup>−1</sup> ou en siemens (S).</p>
+  </div>
+
+  <div class="exo">
+    <span class="lbl">Applications numériques</span>
+    <ol class="q">
+      <li>Une rallonge électrique de 5 m est composée de 2 conducteurs de cuivre de section 0,75 mm². Quelle est la valeur de sa résistance ? (<span class="m"><i>ρ</i> = 1,6 × 10<sup>−8</sup> Ω·m</span>)</li>
+      <li>Un radiateur électrique porte les indications suivantes : 230 V, 1 500 W. L'élément chauffant a une longueur de 2 m et une section de 0,8 mm². Calculer l'intensité du courant consommé.</li>
+      <li>Calculer la valeur de la résistance de l'élément chauffant.</li>
+      <li>Calculer la valeur de la résistivité de l'élément chauffant.</li>
+    </ol>
+    <details class="sol">
+      <summary>Voir la correction</summary>
+      <div class="body calc">
+        <span class="eq">1. <i>R</i> = 2 · <i>ρ</i> ℓ / <i>S</i> = 2 × 1,6 × 10<sup>−8</sup> × 5 / (0,75 × 10<sup>−6</sup>) ≈ <span class="res">0,21 Ω</span> <span class="unit">(deux conducteurs : aller et retour)</span></span>
+        <span class="eq">2. <i>I</i> = <i>P</i> / <i>U</i> = 1 500 / 230 = <span class="res">6,52 A</span></span>
+        <span class="eq">3. <i>R</i> = <i>U</i>² / <i>P</i> = 230² / 1 500 = <span class="res">35,26 Ω</span></span>
+        <span class="eq">4. <i>ρ</i> = <i>R</i> <i>S</i> / ℓ = 35,26 × 0,8 × 10<sup>−6</sup> / 2 = <span class="res">1,41 × 10<sup>−5</sup> Ω·m</span></span>
+      </div>
+    </details>
+  </div>
+
+  <h3 id="joule"><span class="n">1.5</span>Effet Joule</h3>
+  <div class="box def">
+    <span class="lbl">Définition</span>
+    <p>Tout conducteur électrique de résistance <span class="m"><i>R</i></span> parcouru par un courant <span class="m"><i>I</i></span> s'échauffe : il se produit un dégagement de chaleur. Ce phénomène général constitue l'<dfn>effet Joule</dfn>.</p>
+  </div>
+  <div class="formula hl">
+    <span class="eq"><i>P</i> = <i>R</i> × <i>I</i>²<br><small>P en W · R en Ω · I en A</small></span>
+    <span class="eq"><i>W</i> = <i>R</i> × <i>I</i>² × <i>t</i><br><small>W en J · R en Ω · I en A · t en s</small></span>
+    <span class="cap">Puissance dissipée en chaleur · énergie dissipée en chaleur</span>
+  </div>
+  <div class="box note">
+    <span class="lbl">Remarque · unités d'énergie</span>
+    <ul>
+      <li>Si le temps est en heures (h), l'énergie s'exprime en wattheures : <span class="m">1 Wh = 3 600 J</span>.</li>
+      <li>Le compteur électrique d'un abonné mesure l'énergie en kWh : <span class="m">1 kWh = 3 600 kJ</span>.</li>
+    </ul>
+  </div>
+  <h4>Conséquences technologiques</h4>
+  <div class="g2">
+    <div class="card ok">
+      <p class="h">Avantages</p>
+      <ul>
+        <li>Mis à profit dans les appareils fournissant de la chaleur : four, radiateur…</li>
+        <li>Utilisé dans les fusibles et les disjoncteurs thermiques.</li>
+      </ul>
+    </div>
+    <div class="card bad">
+      <p class="h">Inconvénients</p>
+      <ul>
+        <li>Pertes d'énergie dans le transport de l'électricité.</li>
+        <li>Dégagement de chaleur dans les appareils.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="box key">
+    <span class="lbl">Cas particulier</span>
+    <p>Pour un <strong>résistor</strong>, toute la puissance consommée est transformée en chaleur.</p>
+  </div>
+
+  <div class="exo">
+    <span class="lbl">Applications numériques · cocher la bonne réponse</span>
+    <ol class="q">
+      <li>L'effet Joule est-il utile pour les appareils suivants ?
+        <ul class="qcm"><li>Aspirateur</li><li>Tube fluorescent</li><li>Lampe halogène</li><li>Grille-pain</li></ul></li>
+      <li>Un moteur a une résistance interne de 2 Ω. Il est traversé par un courant de 8 A lorsqu'il fonctionne sous 190 V. Quelle est la puissance <span class="m"><i>P</i></span> perdue en chaleur ?
+        <ul class="qcm"><li>16 W</li><li>128 W</li><li>380 W</li><li>72 200 W</li></ul></li>
+      <li>Une résistance de chauffage électrique a une puissance de 1 500 W pour une intensité de 6,5 A. Déterminer la résistance <span class="m"><i>R</i></span> de l'élément chauffant.</li>
+      <li>Pour un résistor au carbone codé <span class="m"><i>R</i> = 470 Ω</span>, le constructeur indique une puissance maximale de 2 W. Quelle est l'intensité maximale du courant pour ce composant ?
+        <ul class="qcm"><li>2,35 A</li><li>0,94 A</li><li>65 mA</li><li>4,25 mA</li></ul></li>
+    </ol>
+    <details class="sol">
+      <summary>Voir la correction</summary>
+      <div class="body">
+        <ol class="q">
+          <li><ul class="qcm"><li>Aspirateur</li><li>Tube fluorescent</li><li>Lampe halogène</li><li class="ok">Grille-pain</li></ul></li>
+          <li><ul class="qcm"><li>16 W</li><li class="ok">128 W</li><li>380 W</li><li>72 200 W</li></ul><span class="m"><i>P</i> = <i>R I</i>² = 2 × 8² = 128 W</span></li>
+          <li><span class="m"><i>R</i> = <i>P</i> / <i>I</i>² = 1 500 / 6,5² = <span class="res">35,50 Ω</span></span></li>
+          <li><ul class="qcm"><li>2,35 A</li><li>0,94 A</li><li class="ok">65 mA</li><li>4,25 mA</li></ul><span class="m"><i>I</i> = √(<i>P</i>/<i>R</i>) = √(2/470) ≈ 65 mA</span></li>
+        </ol>
+      </div>
+    </details>
+  </div>
+
+  <h3 id="resistances"><span class="n">1.6</span>Association de résistances</h3>
+  <div class="g2">
+    <div class="card accent">
+      <div class="kicker">Association série</div>
+      <p>Des dipôles sont en série lorsqu'ils sont traversés par le <strong>même courant</strong> et partagent une connexion qui n'est pas un nœud de courant.</p>
+      <svg class="mini" viewBox="0 0 300 96" role="img" aria-label="Deux résistances R1 et R2 en série, traversées par le même courant I">
+        <path class="ink" d="M10,30 H58 M108,30 H140 M190,30 H230"/>
+        <rect class="box" x="58" y="22" width="50" height="16"/><rect class="box" x="140" y="22" width="50" height="16"/>
+        <text class="mt" x="76" y="16">R<tspan dy="4" font-size="11">1</tspan></text><text class="mt" x="158" y="16">R<tspan dy="4" font-size="11">2</tspan></text>
+        <path class="wi" d="M14,30 H42" marker-end="url(#ah-i)"/><text class="mt" x="20" y="22">I</text>
+        <path class="wu" d="M106,52 H60" marker-end="url(#ah-u)"/><text class="mt" x="76" y="68">U<tspan dy="4" font-size="11">1</tspan></text>
+        <path class="wu" d="M188,52 H142" marker-end="url(#ah-u)"/><text class="mt" x="158" y="68">U<tspan dy="4" font-size="11">2</tspan></text>
+        <path class="wu" d="M226,80 H14" marker-end="url(#ah-u)"/><text class="mt" x="236" y="85">U</text>
+      </svg>
+      <p class="m" style="white-space:normal"><i>U</i> = <i>U</i><sub>1</sub> + <i>U</i><sub>2</sub> = (<i>R</i><sub>1</sub> + <i>R</i><sub>2</sub>) <i>I</i> = <i>R</i><sub>éq</sub> <i>I</i></p>
+    </div>
+    <div class="card accent">
+      <div class="kicker">Association parallèle</div>
+      <p>Des dipôles sont en parallèle lorsqu'ils sont soumis à la <strong>même tension</strong> et sont connectés bornes à bornes.</p>
+      <svg class="mini" viewBox="0 0 300 110" role="img" aria-label="Deux résistances R1 et R2 en parallèle, soumises à la même tension U">
+        <path class="ink" d="M10,46 H80 M80,22 V70 M80,22 H112 M162,22 H200 M80,70 H112 M162,70 H200 M200,22 V70 M200,46 H260"/>
+        <rect class="box" x="112" y="14" width="50" height="16"/><rect class="box" x="112" y="62" width="50" height="16"/>
+        <circle class="dot" cx="80" cy="46" r="2.6"/><circle class="dot" cx="200" cy="46" r="2.6"/>
+        <text class="mt" x="128" y="10">R<tspan dy="4" font-size="11">1</tspan></text><text class="mt" x="128" y="96">R<tspan dy="4" font-size="11">2</tspan></text>
+        <path class="wi" d="M18,46 H50" marker-end="url(#ah-i)"/><text class="mt" x="28" y="38">I</text>
+        <path class="wi" d="M84,22 H104" marker-end="url(#ah-i)"/><text class="mt" x="86" y="14">I<tspan dy="4" font-size="11">1</tspan></text>
+        <path class="wi" d="M84,70 H104" marker-end="url(#ah-i)"/><text class="mt" x="86" y="90">I<tspan dy="4" font-size="11">2</tspan></text>
+        <path class="wu" d="M256,104 H14" marker-end="url(#ah-u)"/><text class="mt" x="266" y="108">U</text>
+      </svg>
+      <p class="m" style="white-space:normal"><i>I</i> = <i>I</i><sub>1</sub> + <i>I</i><sub>2</sub> = <i>U</i> (<span class="fr"><span>1</span><span><i>R</i><sub>1</sub></span></span> + <span class="fr"><span>1</span><span><i>R</i><sub>2</sub></span></span>) = <span class="fr"><span><i>U</i></span><span><i>R</i><sub>éq</sub></span></span></p>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th></th><th>Série</th><th>Parallèle</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Deux résistances</th>
+          <td class="m"><i>R</i><sub>éq</sub> = <i>R</i><sub>1</sub> + <i>R</i><sub>2</sub></td>
+          <td class="m"><span class="fr"><span>1</span><span><i>R</i><sub>éq</sub></span></span> = <span class="fr"><span>1</span><span><i>R</i><sub>1</sub></span></span> + <span class="fr"><span>1</span><span><i>R</i><sub>2</sub></span></span> &nbsp;⇒&nbsp; <i>R</i><sub>éq</sub> = <span class="fr"><span><i>R</i><sub>1</sub> <i>R</i><sub>2</sub></span><span><i>R</i><sub>1</sub> + <i>R</i><sub>2</sub></span></span></td></tr>
+        <tr><th scope="row"><span class="m"><i>n</i></span> résistances</th>
+          <td class="m"><i>R</i><sub>éq</sub> = <span class="op"><small>n</small><b>∑</b><small>i=1</small></span> <i>R</i><sub>i</sub></td>
+          <td class="m"><i>G</i><sub>éq</sub> = <span class="op"><small>n</small><b>∑</b><small>i=1</small></span> <i>G</i><sub>i</sub> &nbsp;ou&nbsp; <span class="fr"><span>1</span><span><i>R</i><sub>éq</sub></span></span> = <span class="op"><small>n</small><b>∑</b><small>i=1</small></span> <span class="fr"><span>1</span><span><i>R</i><sub>i</sub></span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box key">
+    <span class="lbl">À retenir</span>
+    <ul>
+      <li>En <strong>série</strong>, les résistances s'additionnent.</li>
+      <li>En <strong>parallèle</strong>, ce sont les conductances (inverses des résistances) qui s'additionnent.</li>
+    </ul>
+  </div>
+
+  <div class="exo">
+    <span class="lbl">Application · circuit série</span>
+    <figure class="fig" style="--w:440px;margin:6px 0 12px">
+      <svg viewBox="0 0 440 100" role="img" aria-label="Trois résistances en série : R1 = 11 ohms, R2 = 8 ohms, R3 = 13 ohms, sous Ut = 240 V">
+        <path class="ink" d="M30,36 H80 M130,36 H180 M230,36 H280 M330,36 H400 M40,36 V84 M390,36 V84"/>
+        <rect class="box" x="80" y="28" width="50" height="16"/><rect class="box" x="180" y="28" width="50" height="16"/><rect class="box" x="280" y="28" width="50" height="16"/>
+        <text x="105" y="18" text-anchor="middle">R₁ = 11 Ω</text><text x="205" y="18" text-anchor="middle">R₂ = 8 Ω</text><text x="305" y="18" text-anchor="middle">R₃ = 13 Ω</text>
+        <path class="wi" d="M2,36 H30" marker-end="url(#ah-i)"/><text x="4" y="58" class="sm">It = ?</text>
+        <path class="wu" d="M128,58 H82" marker-end="url(#ah-u)"/><text class="mt" x="98" y="72" style="font-size:13px">U<tspan dy="3" font-size="10">1</tspan></text>
+        <path class="wu" d="M228,58 H182" marker-end="url(#ah-u)"/><text class="mt" x="198" y="72" style="font-size:13px">U<tspan dy="3" font-size="10">2</tspan></text>
+        <path class="wu" d="M328,58 H282" marker-end="url(#ah-u)"/><text class="mt" x="298" y="72" style="font-size:13px">U<tspan dy="3" font-size="10">3</tspan></text>
+        <path class="wu" d="M388,84 H42" marker-end="url(#ah-u)"/><text x="215" y="98" text-anchor="middle">Ut = 240 V</text>
+      </svg>
+    </figure>
+    <p>Calculer les valeurs suivantes : <span class="m"><i>R</i><sub>éq</sub></span>, <span class="m"><i>I</i><sub>t</sub></span>, <span class="m"><i>U</i><sub>1</sub></span>, <span class="m"><i>U</i><sub>2</sub></span>, <span class="m"><i>U</i><sub>3</sub></span>.</p>
+    <details class="sol">
+      <summary>Voir la correction</summary>
+      <div class="body calc">
+        <span class="eq"><i>R</i><sub>éq</sub> = <i>R</i><sub>1</sub> + <i>R</i><sub>2</sub> + <i>R</i><sub>3</sub> = 11 + 8 + 13 = <span class="res">32 Ω</span></span>
+        <span class="eq"><i>I</i><sub>t</sub> = <i>U</i><sub>t</sub> / <i>R</i><sub>éq</sub> = 240 / 32 = <span class="res">7,5 A</span></span>
+        <span class="eq"><i>U</i><sub>R1</sub> = <i>R</i><sub>1</sub> · <i>I</i><sub>t</sub> = 11 × 7,5 = <span class="res">82,5 V</span></span>
+        <span class="eq"><i>U</i><sub>R2</sub> = <i>R</i><sub>2</sub> · <i>I</i><sub>t</sub> = 8 × 7,5 = <span class="res">60 V</span></span>
+        <span class="eq"><i>U</i><sub>R3</sub> = <i>R</i><sub>3</sub> · <i>I</i><sub>t</sub> = 13 × 7,5 = <span class="res">97,5 V</span></span>
+      </div>
+    </details>
+  </div>
+
+  <div class="exo">
+    <span class="lbl">Application · circuit parallèle</span>
+    <figure class="fig" style="--w:380px;margin:6px 0 12px">
+      <svg viewBox="0 0 340 170" role="img" aria-label="Trois résistances en parallèle : R1 = 120 ohms, R2 = 240 ohms, R3 = 160 ohms, sous U = 230 V">
+        <path class="ink" d="M30,90 H110 M110,40 V140 M110,40 H150 M200,40 H240 M110,90 H150 M200,90 H240 M110,140 H150 M200,140 H240 M240,40 V140 M240,90 H300 V160 H30"/>
+        <rect class="box" x="150" y="32" width="50" height="16"/><rect class="box" x="150" y="82" width="50" height="16"/><rect class="box" x="150" y="132" width="50" height="16"/>
+        <circle class="dot" cx="110" cy="90" r="2.6"/><circle class="dot" cx="240" cy="90" r="2.6"/>
+        <text x="175" y="24" text-anchor="middle">R₁ = 120 Ω</text><text x="175" y="76" text-anchor="middle">R₂ = 240 Ω</text><text x="175" y="126" text-anchor="middle">R₃ = 160 Ω</text>
+        <path class="wi" d="M60,90 H90" marker-end="url(#ah-i)"/><text x="40" y="80" class="sm">I total = ?</text>
+        <path class="wi" d="M114,40 H140" marker-end="url(#ah-i)"/><text class="mt" x="118" y="32" style="font-size:13px">I<tspan dy="3" font-size="10">1</tspan></text>
+        <path class="wi" d="M114,90 H140" marker-end="url(#ah-i)"/><text class="mt" x="118" y="82" style="font-size:13px">I<tspan dy="3" font-size="10">2</tspan></text>
+        <path class="wi" d="M114,140 H140" marker-end="url(#ah-i)"/><text class="mt" x="118" y="132" style="font-size:13px">I<tspan dy="3" font-size="10">3</tspan></text>
+        <circle class="hollow" cx="30" cy="90" r="3"/><circle class="hollow" cx="30" cy="160" r="3"/>
+        <path class="wu" d="M22,156 V98" marker-end="url(#ah-u)"/><text x="6" y="132" class="sm" transform="rotate(-90 6 132)">U = 230 V</text>
+      </svg>
+    </figure>
+    <ol class="q">
+      <li>Calculer la valeur de la résistance <span class="m"><i>R</i><sub>éq</sub></span>.</li>
+      <li>Calculer l'intensité du courant <span class="m"><i>I</i><sub>total</sub></span>.</li>
+      <li>Calculer les intensités <span class="m"><i>I</i><sub>1</sub></span>, <span class="m"><i>I</i><sub>2</sub></span> et <span class="m"><i>I</i><sub>3</sub></span>.</li>
+    </ol>
+    <details class="sol">
+      <summary>Voir la correction</summary>
+      <div class="body calc">
+        <span class="eq">1. 1/<i>R</i><sub>éq</sub> = 1/120 + 1/240 + 1/160 = 3/160 &nbsp;⇒&nbsp; <i>R</i><sub>éq</sub> = 160/3 = <span class="res">53,33 Ω</span></span>
+        <span class="eq">2. <i>I</i><sub>total</sub> = <i>U</i> / <i>R</i><sub>éq</sub> = 230 / 53,33 = <span class="res">4,30 A</span></span>
+        <span class="eq">3. <i>I</i><sub>1</sub> = 230 / 120 = <span class="res">1,91 A</span> ; <i>I</i><sub>2</sub> = 230 / 240 = <span class="res">0,95 A</span> ; <i>I</i><sub>3</sub> = 230 / 160 = <span class="res">1,43 A</span></span>
+      </div>
+    </details>
+  </div>
+
+  <h3 id="moteur"><span class="n">1.7</span>Exercice d'application : moteur à courant continu</h3>
+  <div class="exo">
+    <span class="lbl">Exercice</span>
+    <p>Un moteur à courant continu alimenté sous une tension <span class="m"><i>U</i> = 24 V</span> absorbe un courant <span class="m"><i>I</i> = 5 A</span>, tourne à une fréquence <span class="m"><i>N</i> = 600 tr/min</span> et a un rendement <span class="m"><i>η</i> = 0,8</span>.</p>
+    <ol class="q">
+      <li>Calculer la puissance d'entrée <span class="m"><i>P</i><sub>e</sub></span> du moteur.</li>
+      <li>Calculer la puissance de sortie <span class="m"><i>P</i><sub>s</sub></span> du moteur.</li>
+      <li>Calculer la puissance perdue <span class="m"><i>P</i><sub>f</sub></span> dans le moteur.</li>
+      <li>Calculer la vitesse angulaire <span class="m"><i>ω</i></span> du moteur.</li>
+      <li>Calculer le couple moteur <span class="m"><i>C</i></span> développé par le moteur.</li>
+    </ol>
+    <div class="box warn" style="margin:14px 0 6px">
+      <span class="lbl">Attention · correction du support</span>
+      <p>La correction qui accompagne cet énoncé dans le support ne lui correspond pas : elle part d'une puissance de 480 W et traite un réducteur de vitesse (rapport de dents <span class="m"><i>Z</i><sub>e</sub>/<i>Z</i><sub>s</sub></span>) absent de l'énoncé. La correction ci-dessous est recalculée à partir des données de l'énoncé.</p>
+    </div>
+    <details class="sol prop">
+      <summary>Correction proposée <span class="tag w">recalculée à partir de l'énoncé</span></summary>
+      <div class="body calc">
+        <span class="eq">1. <i>P</i><sub>e</sub> = <i>U</i> · <i>I</i> = 24 × 5 = <span class="res">120 W</span></span>
+        <span class="eq">2. <i>P</i><sub>s</sub> = <i>η</i> · <i>P</i><sub>e</sub> = 0,8 × 120 = <span class="res">96 W</span></span>
+        <span class="eq">3. <i>P</i><sub>f</sub> = <i>P</i><sub>e</sub> − <i>P</i><sub>s</sub> = 120 − 96 = <span class="res">24 W</span></span>
+        <span class="eq">4. <i>ω</i> = 2π<i>N</i> / 60 = 2π × 600 / 60 ≈ <span class="res">62,8 rad/s</span></span>
+        <span class="eq">5. <i>C</i> = <i>P</i><sub>s</sub> / <i>ω</i> = 96 / 62,8 ≈ <span class="res">1,53 N·m</span></span>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="sec" id="mono">
+  <p class="part">Partie 2</p>
+  <h2><span class="n">2</span>Régime sinusoïdal monophasé</h2>
+
+  <h3 id="intro-sin"><span class="n">2.1</span>Tension variable et grandeurs périodiques</h3>
+  <ul>
+    <li>On s'intéresse ici à la <strong>tension monophasée</strong>, qui est variable dans le temps.</li>
+    <li>Pour une tension variable dans le temps et un signal centré sur 0 (qui change de signe), on parle de <strong>tension alternative</strong>.</li>
+    <li>Plus généralement, on décompose le signal en deux composantes : une <strong>composante continue</strong> <span class="m"><i>U</i><sub>DC</sub></span> et une <strong>composante alternative</strong> <span class="m"><i>U</i><sub>AC</sub></span> (tension efficace).</li>
+  </ul>
+  <figure class="fig" style="--w:440px">
+    <svg viewBox="0 0 380 196" role="img" aria-label="Signal U(t) composé d'une composante continue U_DC et d'une sinusoïde d'amplitude U_1 et de période T0">
+      <path class="grid dash" d="M78,50 H345 M78,95 H345 M78,140 H345"/>
+      <path class="axis" d="M78,180 V10 M78,176 H360"/><path class="axis" d="M74,16 L78,10 L82,16 M354,172 L360,176 L354,180"/>
+      <path class="wu" d="M78.0,95.0 L81.2,84.6 L84.5,74.8 L87.7,66.1 L90.9,58.9 L94.2,53.7 L97.4,50.7 L100.6,50.1 L103.9,51.9 L107.1,56.0 L110.3,62.3 L113.6,70.3 L116.8,79.6 L120.0,89.8 L123.3,100.2 L126.5,110.4 L129.8,119.7 L133.0,127.7 L136.2,134.0 L139.5,138.1 L142.7,139.9 L145.9,139.3 L149.2,136.3 L152.4,131.1 L155.6,123.9 L158.9,115.2 L162.1,105.4 L165.3,95.0 L168.6,84.6 L171.8,74.8 L175.0,66.1 L178.3,58.9 L181.5,53.7 L184.7,50.7 L188.0,50.1 L191.2,51.9 L194.4,56.0 L197.7,62.3 L200.9,70.3 L204.1,79.6 L207.4,89.8 L210.6,100.2 L213.9,110.4 L217.1,119.7 L220.3,127.7 L223.6,134.0 L226.8,138.1 L230.0,139.9 L233.3,139.3 L236.5,136.3 L239.7,131.1 L243.0,123.9 L246.2,115.2 L249.4,105.4 L252.7,95.0 L255.9,84.6 L259.1,74.8 L262.4,66.1 L265.6,58.9 L268.8,53.7 L272.1,50.7 L275.3,50.1 L278.5,51.9 L281.8,56.0 L285.0,62.3 L288.2,70.3 L291.5,79.6 L294.7,89.8 L298.0,100.2 L301.2,110.4 L304.4,119.7 L307.7,127.7 L310.9,134.0 L314.1,138.1 L317.4,139.9 L320.6,139.3 L323.8,136.3 L327.1,131.1 L330.3,123.9 L333.5,115.2 L336.8,105.4 L340.0,95.0"/>
+      <path class="ink thin dash" d="M187.2,50 V164 M274.5,50 V164"/>
+      <path class="ink thin" d="M187.2,158 H274.5" marker-start="url(#ah)" marker-end="url(#ah)"/>
+      <text class="mt" x="231" y="152" text-anchor="middle" style="font-size:13px">T<tspan dy="3" font-size="10">0</tspan><tspan dy="-3"> = 1/f</tspan><tspan dy="3" font-size="10">0</tspan></text>
+      <text class="mt" x="72" y="54" text-anchor="end" style="font-size:13px">U<tspan dy="3" font-size="10">DC</tspan><tspan dy="-3"> + U</tspan><tspan dy="3" font-size="10">1</tspan></text>
+      <text class="mt" x="72" y="99" text-anchor="end" style="font-size:13px">U<tspan dy="3" font-size="10">DC</tspan></text>
+      <text class="mt" x="72" y="144" text-anchor="end" style="font-size:13px">U<tspan dy="3" font-size="10">DC</tspan><tspan dy="-3"> − U</tspan><tspan dy="3" font-size="10">1</tspan></text>
+      <text class="mt" x="70" y="186" text-anchor="end" style="font-size:12px">0</text>
+      <text class="mt" x="86" y="16">U(t)</text><text class="mt" x="352" y="194" text-anchor="end">t</text>
+    </svg>
+    <figcaption>Composante continue <span class="m"><i>U</i><sub>DC</sub></span> et composante alternative d'amplitude <span class="m"><i>U</i><sub>1</sub></span>.</figcaption>
+  </figure>
+  <div class="formula hl">
+    <span class="eq"><i>ω</i> = 2π <i>f</i><sub>0</sub></span>
+    <span class="eq"><i>U</i>(<i>t</i>) = <i>U</i><sub>DC</sub> + <i>U</i><sub>1</sub> · sin(<i>ωt</i> + <i>φ</i>)</span>
+    <span class="eq">⇔ <i>U</i>(<i>t</i>) = <i>U</i><sub>DC</sub> + <span class="rt">√<span>2</span></span> · <i>U</i><sub>AC</sub> · sin(<i>ωt</i> + <i>φ</i>)</span>
+    <span class="cap">Pulsation et expression de la tension</span>
+  </div>
+
+  <h4>Période <span class="m"><i>T</i></span></h4>
+  <p>Un signal périodique est caractérisé par sa <dfn>période</dfn> <span class="m"><i>T</i></span>.</p>
+  <div class="fig-row">
+    <figure class="fig">
+      <svg viewBox="0 0 320 196" style="max-width:340px" role="img" aria-label="Signal sinusoïdal de période T = 2π, d'amplitude V chapeau">
+        <path class="grid dash" d="M40,30 H95 M40,170 H205"/>
+        <path class="axis" d="M40,190 V8 M30,100 H310"/><path class="axis" d="M36,14 L40,8 L44,14 M304,96 L310,100 L304,104"/>
+        <path class="wu" d="M40.0,100.0 L43.2,93.6 L46.4,87.2 L49.6,81.0 L52.8,74.9 L56.0,69.0 L59.3,63.4 L62.5,58.1 L65.7,53.1 L68.9,48.6 L72.1,44.4 L75.3,40.8 L78.5,37.6 L81.7,35.0 L84.9,32.9 L88.1,31.3 L91.4,30.4 L94.6,30.0 L97.8,30.2 L101.0,31.0 L104.2,32.4 L107.4,34.3 L110.6,36.8 L113.8,39.9 L117.0,43.4 L120.2,47.4 L123.5,51.9 L126.7,56.7 L129.9,61.9 L133.1,67.5 L136.3,73.3 L139.5,79.3 L142.7,85.5 L145.9,91.9 L149.1,98.3 L152.3,104.7 L155.6,111.1 L158.8,117.3 L162.0,123.5 L165.2,129.4 L168.4,135.1 L171.6,140.5 L174.8,145.6 L178.0,150.2 L181.2,154.5 L184.4,158.3 L187.7,161.6 L190.9,164.4 L194.1,166.6 L197.3,168.3 L200.5,169.4 L203.7,170.0 L206.9,169.9 L210.1,169.3 L213.3,168.0 L216.5,166.2 L219.8,163.9 L223.0,161.0 L226.2,157.6 L229.4,153.7 L232.6,149.4 L235.8,144.6 L239.0,139.5 L242.2,134.0 L245.4,128.3 L248.6,122.3 L251.9,116.1 L255.1,109.8 L258.3,103.5 L261.5,97.0 L264.7,90.6 L267.9,84.3 L271.1,78.2 L274.3,72.2 L277.5,66.4 L280.7,60.9 L284.0,55.8 L287.2,51.0 L290.4,46.6 L293.6,42.7 L296.8,39.3 L300.0,36.3"/>
+        <path class="ink thin" d="M150,96 V104 M260,96 V104"/>
+        <text class="mt" x="146" y="118" style="font-size:13px">π</text><text class="mt" x="264" y="118" style="font-size:13px">2π</text>
+        <text class="mt" x="34" y="34" text-anchor="end" style="font-size:13px">+V̂</text><text class="mt" x="34" y="174" text-anchor="end" style="font-size:13px">−V̂</text>
+        <path class="ink thin" d="M40,186 H260" marker-start="url(#ah)" marker-end="url(#ah)"/><path class="ink thin dash" d="M260,100 V190"/>
+        <text class="mt" x="96" y="182" style="font-size:13px">T</text>
+        <text class="mt" x="48" y="16">u (V)</text><text class="mt" x="306" y="90" text-anchor="end">θ (rad)</text>
+      </svg>
+      <figcaption>Signal sinusoïdal : <span class="m"><i>T</i> = 2π</span> (en radians).</figcaption>
+    </figure>
+    <figure class="fig">
+      <svg viewBox="0 0 320 196" style="max-width:340px" role="img" aria-label="Signal rectangulaire de 10 V, à l'état haut de 2 à 3 ms, de période T = 3 ms">
+        <path class="grid dash" d="M40,60 H120 M160,16 V60 M280,16 V60"/>
+        <path class="axis" d="M40,190 V8 M30,150 H310"/><path class="axis" d="M36,14 L40,8 L44,14 M304,146 L310,150 L304,154"/>
+        <path class="wu" d="M40,150 H120 V60 H160 V150 H240 V60 H280 V150 H300"/>
+        <text class="mt" x="34" y="64" text-anchor="end" style="font-size:13px">10</text>
+        <text class="mt" x="116" y="168" style="font-size:13px">2</text><text class="mt" x="156" y="168" style="font-size:13px">3</text><text class="mt" x="34" y="168" text-anchor="end" style="font-size:12px">0</text>
+        <path class="ink thin" d="M120,44 H160" marker-start="url(#ah)" marker-end="url(#ah)"/><text class="mt" x="132" y="38" style="font-size:13px">t<tspan dy="3" font-size="10">H</tspan></text>
+        <path class="ink thin" d="M160,22 H280" marker-start="url(#ah)" marker-end="url(#ah)"/><text class="mt" x="216" y="16" style="font-size:13px">T</text>
+        <text class="mt" x="48" y="16">u (V)</text><text class="mt" x="306" y="172" text-anchor="end">t (ms)</text>
+      </svg>
+      <figcaption>Signal rectangulaire : <span class="m"><i>t</i><sub>H</sub></span> = durée à l'état haut, <span class="m"><i>T</i> = 3 ms</span>.</figcaption>
+    </figure>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="kicker">Fréquence · f</div>
+      <p class="m" style="font-size:1.3rem"><i>f</i> = <span class="fr"><span>1</span><span><i>T</i></span></span></p>
+      <p class="small">Nombre de périodes par unité de temps, en hertz (Hz = s<sup>−1</sup>).</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Pulsation · ω</div>
+      <p class="m" style="font-size:1.15rem;white-space:normal"><i>ω</i> = 2π<i>f</i> = <span class="fr"><span>2π</span><span><i>T</i></span></span> = <span class="fr"><span>d<i>θ</i></span><span>d<i>t</i></span></span></p>
+      <p class="small">En radians par seconde (rad/s).</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Rapport cyclique · α</div>
+      <p class="m" style="font-size:1.3rem"><i>α</i> = <span class="fr"><span><i>t</i><sub>H</sub></span><span><i>T</i></span></span></p>
+      <p class="small">Rapport entre la durée à l'état haut <span class="m"><i>t</i><sub>H</sub></span> d'un signal et sa période <span class="m"><i>T</i></span>.</p>
+    </div>
+  </div>
+  <div class="exo">
+    <span class="lbl">Application</span>
+    <ol class="q">
+      <li>Un générateur délivre une tension alternative sinusoïdale de fréquence 50 Hz. Calculer sa période et sa pulsation.</li>
+      <li>Un générateur délivre une tension alternative sinusoïdale de période 4 ms. Calculer sa fréquence et sa pulsation.</li>
+    </ol>
+    <details class="sol prop">
+      <summary>Correction proposée <span class="tag w">calculée, absente du support</span></summary>
+      <div class="body calc">
+        <span class="eq">1. <i>T</i> = 1/<i>f</i> = 1/50 = <span class="res">20 ms</span> ; <i>ω</i> = 2π × 50 ≈ <span class="res">314 rad/s</span></span>
+        <span class="eq">2. <i>f</i> = 1/<i>T</i> = 1/(4 × 10<sup>−3</sup>) = <span class="res">250 Hz</span> ; <i>ω</i> = 2π × 250 ≈ <span class="res">1 571 rad/s</span></span>
+      </div>
+    </details>
+  </div>
+
+  <h3 id="monophase"><span class="n">2.2</span>Le monophasé</h3>
+  <div class="box def">
+    <span class="lbl">Définition</span>
+    <p>Le <dfn>monophasé</dfn> est un système de distribution d'énergie électrique où la tension et le courant varient de manière alternative sinusoïdale.</p>
+  </div>
+  <div class="side">
+    <svg viewBox="0 0 300 130" role="img" aria-label="Source monophasée reliée à un récepteur par la phase et le neutre">
+      <rect class="boxs" x="14" y="20" width="76" height="90" rx="3"/>
+      <text x="52" y="60" text-anchor="middle" class="sm">Source</text><text x="52" y="74" text-anchor="middle" class="sm">monophasée</text>
+      <path class="ink" d="M90,38 H250 V48 M250,82 V92 H90"/>
+      <rect class="box" x="243" y="48" width="14" height="34"/>
+      <rect x="222" y="20" width="58" height="90" rx="3" fill="none" stroke="var(--fig-soft)" stroke-dasharray="4 3"/>
+      <text x="251" y="124" text-anchor="middle" class="sm mut">récepteur</text>
+      <text x="98" y="31" class="sm">Phase</text><text x="98" y="106" class="sm">Neutre</text>
+      <path class="wi" d="M160,38 H190" marker-end="url(#ah-i)"/><text class="mt" x="170" y="30">I</text>
+      <path class="wu" d="M136,88 V44" marker-end="url(#ah-u)"/><text class="mt" x="144" y="70">V</text>
+    </svg>
+    <div class="txt">
+      <ul>
+        <li><strong>Utilisation :</strong> alimentation disponible au niveau des prises de courant domestiques.</li>
+        <li><strong>3 connexions</strong> dans les installations domestiques : la phase, le neutre et la terre.</li>
+        <li>En France, la distribution monophasée domestique est en <span class="m"><i>V</i> = 220–230 V</span>, <span class="m"><i>f</i> = 50 Hz</span>.</li>
+      </ul>
+    </div>
+  </div>
+  <h4>Tension alternative sinusoïdale</h4>
+  <div class="formula hl">
+    <span class="eq"><i>u</i>(<i>t</i>) = <i>U</i><sub>eff</sub> · <span class="rt">√<span>2</span></span> · sin(<i>ωt</i>)</span>
+    <span class="cap"><span class="m"><i>U</i><sub>eff</sub></span> : tension efficace (V) · <span class="m"><i>ω</i></span> : pulsation (rad/s) · à 50 Hz, <span class="m"><i>ω</i> = 2π<i>f</i> = 314 rad/s</span></span>
+  </div>
+
+  <h3 id="valeurs"><span class="n">2.3</span>Valeur moyenne et valeur efficace</h3>
+  <h4>Valeur moyenne <span class="m"><i>u</i><sub>moy</sub> = ⟨<i>u</i>⟩</span></h4>
+  <p>La valeur moyenne d'une tension ou d'un courant se calcule sur une période <span class="m"><i>T</i></span>, selon la variable choisie : <span class="m"><i>t</i></span> ou <span class="m"><i>θ</i></span>.</p>
+  <div class="formula hl">
+    <span class="eq"><i>u</i><sub>moy</sub> = ⟨<i>u</i>⟩ = <span class="fr"><span>1</span><span><i>T</i></span></span><span class="ig"><b>∫</b><span><span><i>T</i></span><span>0</span></span></span> <i>u</i>(<i>t</i>) d<i>t</i></span>
+    <span class="eq"><i>u</i><sub>moy</sub> = <span class="fr"><span>1</span><span>2π</span></span><span class="ig"><b>∫</b><span><span>2π</span><span>0</span></span></span> <i>u</i>(<i>θ</i>) d<i>θ</i></span>
+    <span class="eq"><i>u</i><sub>moy</sub> = <span class="fr"><span><i>S</i></span><span><i>T</i></span></span></span>
+    <span class="cap"><span class="m"><i>S</i></span> : surface comprise entre la courbe <span class="m"><i>u</i>(<i>t</i>)</span> et l'axe des temps pendant une période <span class="m"><i>T</i></span></span>
+  </div>
+  <div class="side">
+    <svg viewBox="0 0 330 196" role="img" aria-label="Sinusoïde : la surface S1 de l'alternance positive est égale à la surface S2 de l'alternance négative">
+      <path class="fa" d="M50.0,100.0 L53.2,94.5 L56.5,89.0 L59.7,83.6 L63.0,78.3 L66.2,73.2 L69.5,68.3 L72.7,63.6 L75.9,59.2 L79.2,55.0 L82.4,51.2 L85.7,47.7 L88.9,44.7 L92.2,42.0 L95.4,39.7 L98.6,37.8 L101.9,36.5 L105.1,35.5 L108.4,35.1 L111.6,35.1 L114.9,35.5 L118.1,36.5 L121.4,37.8 L124.6,39.7 L127.8,42.0 L131.1,44.7 L134.3,47.7 L137.6,51.2 L140.8,55.0 L144.1,59.2 L147.3,63.6 L150.5,68.3 L153.8,73.2 L157.0,78.3 L160.3,83.6 L163.5,89.0 L166.8,94.5 L170.0,100.0 Z"/>
+      <path class="fa" d="M170.0,100.0 L173.2,105.5 L176.5,111.0 L179.7,116.4 L183.0,121.7 L186.2,126.8 L189.5,131.7 L192.7,136.4 L195.9,140.8 L199.2,145.0 L202.4,148.8 L205.7,152.3 L208.9,155.3 L212.2,158.0 L215.4,160.3 L218.6,162.2 L221.9,163.5 L225.1,164.5 L228.4,164.9 L231.6,164.9 L234.9,164.5 L238.1,163.5 L241.4,162.2 L244.6,160.3 L247.8,158.0 L251.1,155.3 L254.3,152.3 L257.6,148.8 L260.8,145.0 L264.1,140.8 L267.3,136.4 L270.5,131.7 L273.8,126.8 L277.0,121.7 L280.3,116.4 L283.5,111.0 L286.8,105.5 L290.0,100.0 Z"/>
+      <path class="grid dash" d="M50,35 H110 M50,165 H230"/>
+      <path class="axis" d="M50,190 V8 M40,100 H320"/><path class="axis" d="M46,14 L50,8 L54,14 M314,96 L320,100 L314,104"/>
+      <path class="wu" d="M50.0,100.0 L53.2,94.6 L56.4,89.1 L59.6,83.8 L62.8,78.6 L66.0,73.5 L69.2,68.6 L72.4,64.0 L75.6,59.6 L78.8,55.4 L82.1,51.6 L85.3,48.2 L88.5,45.1 L91.7,42.3 L94.9,40.0 L98.1,38.1 L101.3,36.7 L104.5,35.7 L107.7,35.1 L110.9,35.0 L114.1,35.4 L117.3,36.2 L120.5,37.4 L123.7,39.1 L126.9,41.3 L130.1,43.8 L133.3,46.8 L136.5,50.1 L139.7,53.7 L142.9,57.7 L146.2,62.0 L149.4,66.6 L152.6,71.3 L155.8,76.3 L159.0,81.5 L162.2,86.8 L165.4,92.2 L168.6,97.6 L171.8,103.1 L175.0,108.5 L178.2,113.9 L181.4,119.1 L184.6,124.3 L187.8,129.2 L191.0,134.0 L194.2,138.5 L197.4,142.8 L200.6,146.7 L203.8,150.3 L207.1,153.6 L210.3,156.5 L213.5,159.0 L216.7,161.1 L219.9,162.7 L223.1,163.9 L226.3,164.7 L229.5,165.0 L232.7,164.8 L235.9,164.2 L239.1,163.2 L242.3,161.7 L245.5,159.7 L248.7,157.4 L251.9,154.6 L255.1,151.4 L258.3,147.9 L261.5,144.1 L264.7,139.9 L267.9,135.5 L271.2,130.8 L274.4,125.9 L277.6,120.8 L280.8,115.6 L284.0,110.2 L287.2,104.8 L290.4,99.3 L293.6,93.9 L296.8,88.5 L300.0,83.2"/>
+      <text class="mt" x="98" y="86">S<tspan dy="4" font-size="11">1</tspan></text><text class="mt" x="222" y="128">S<tspan dy="4" font-size="11">2</tspan></text>
+      <text class="mt" x="166" y="118" style="font-size:13px">π</text><text class="mt" x="284" y="118" style="font-size:13px">2π</text>
+      <text class="mt" x="44" y="39" text-anchor="end" style="font-size:13px">+V̂</text><text class="mt" x="44" y="169" text-anchor="end" style="font-size:13px">−V̂</text>
+      <text class="mt" x="58" y="16">u(θ) = V̂ sin θ</text><text class="mt" x="316" y="90" text-anchor="end">θ</text>
+    </svg>
+    <div class="txt calc" style="font-size:1rem">
+      <span class="eq">⟨<i>u</i>⟩ = <span class="fr"><span>1</span><span>2π</span></span><span class="ig"><b>∫</b><span><span>2π</span><span>0</span></span></span> <i>V̂</i> sin <i>θ</i> d<i>θ</i></span>
+      <span class="eq">⟨<i>u</i>⟩ = <span class="fr"><span><i>V̂</i></span><span>2π</span></span> [−cos <i>θ</i>]<sub>0</sub><sup>2π</sup> = 0</span>
+      <span class="eq">ou : ⟨<i>u</i>⟩ = <span class="fr"><span><i>S</i><sub>1</sub> − <i>S</i><sub>2</sub></span><span>2π</span></span> = 0 <span class="unit">car S₁ = S₂</span></span>
+    </div>
+  </div>
+  <div class="box key">
+    <span class="lbl">À retenir</span>
+    <p>La composante <strong>sinusoïdale alternative</strong> a une valeur moyenne nulle : <span class="m">⟨<i>u</i>⟩ = <i>u</i><sub>moy</sub> = 0</span>.</p>
+  </div>
+
+  <h4>Valeur efficace <span class="m"><i>U</i><sub>eff</sub> = <i>U</i></span></h4>
+  <p>La valeur efficace s'exprime à l'aide de deux relations générales, pour une grandeur périodique de période <span class="m"><i>T</i></span> :</p>
+  <div class="formula">
+    <span class="eq"><i>U</i><sub>eff</sub> = <span class="rt">√<span>⟨<i>u</i>²⟩</span></span> = <span class="rt">√<span><span class="fr"><span>1</span><span><i>T</i></span></span><span class="ig"><b>∫</b><span><span><i>T</i></span><span>0</span></span></span> <i>u</i>²(<i>t</i>) d<i>t</i></span></span></span>
+    <span class="eq"><i>U</i><sub>eff</sub> = <span class="rt">√<span><span class="fr"><span>1</span><span>2π</span></span><span class="ig"><b>∫</b><span><span>2π</span><span>0</span></span></span> <i>u</i>²(<i>θ</i>) d<i>θ</i></span></span></span>
+  </div>
+  <div class="g2">
+    <div class="formula hl" style="margin:0">
+      <span class="cap top">Tension sinusoïdale</span>
+      <span class="eq"><i>U</i><sub>eff</sub> = <span class="fr"><span><i>V̂</i></span><span><span class="rt">√<span>2</span></span></span></span> = <span class="fr"><span><i>V</i><sub>max</sub></span><span><span class="rt">√<span>2</span></span></span></span></span>
+    </div>
+    <div class="formula hl" style="margin:0">
+      <span class="cap top">Courant sinusoïdal</span>
+      <span class="eq"><i>I</i><sub>eff</sub> = <i>I</i> = <span class="fr"><span><i>Î</i></span><span><span class="rt">√<span>2</span></span></span></span> = <span class="fr"><span><i>I</i><sub>max</sub></span><span><span class="rt">√<span>2</span></span></span></span></span>
+    </div>
+  </div>
+  <p class="small muted">De façon générale, pour un courant : <span class="m"><i>I</i><sub>eff</sub> = <i>I</i> = <span class="rt">√<span>⟨<i>i</i>²⟩</span></span></span>.</p>
+
+  <details class="demo">
+    <summary>Démonstration : valeur efficace d'une tension sinusoïdale</summary>
+    <div class="body">
+      <div class="side" style="border:0;padding:0;margin:8px 0 0">
+        <svg viewBox="0 0 330 176" role="img" aria-label="Courbe de U² en fonction du temps : deux bosses identiques par période, de hauteur U²max">
+          <path class="fa" d="M50.0,150.0 L53.2,149.2 L56.4,146.9 L59.6,143.2 L62.8,138.1 L66.0,131.8 L69.2,124.5 L72.4,116.3 L75.6,107.6 L78.8,98.5 L82.0,89.3 L85.2,80.2 L88.4,71.6 L91.6,63.6 L94.8,56.5 L98.0,50.5 L101.2,45.7 L104.4,42.3 L107.6,40.4 L110.8,40.0 L114.0,41.2 L117.2,43.9 L120.4,48.0 L123.6,53.4 L126.8,59.9 L130.0,67.5 L133.2,75.8 L136.4,84.7 L139.6,93.8 L142.8,103.0 L146.0,112.0 L149.2,120.5 L152.4,128.3 L155.6,135.1 L158.8,140.8 L162.0,145.2 L165.2,148.3 L168.4,149.8 L171.6,149.8 L174.8,148.3 L178.0,145.2 L181.2,140.8 L184.4,135.1 L187.6,128.3 L190.8,120.5 L194.0,112.0 L197.2,103.0 L200.4,93.8 L203.6,84.7 L206.8,75.8 L210.0,67.5 L213.2,59.9 L216.4,53.4 L219.6,48.0 L222.8,43.9 L226.0,41.2 L229.2,40.0 L232.4,40.4 L235.6,42.3 L238.8,45.7 L242.0,50.5 L245.2,56.5 L248.4,63.6 L251.6,71.6 L254.8,80.2 L258.0,89.3 L261.2,98.5 L264.4,107.6 L267.6,116.3 L270.8,124.5 L274.0,131.8 L277.2,138.1 L280.4,143.2 L283.6,146.9 L286.8,149.2 L290.0,150.0 Z"/>
+          <path class="grid dash" d="M50,40 H300"/>
+          <path class="axis" d="M50,170 V8 M40,150 H320"/><path class="axis" d="M46,14 L50,8 L54,14 M314,146 L320,150 L314,154"/>
+          <path class="wa" d="M50.0,150.0 L53.2,149.2 L56.4,146.9 L59.6,143.2 L62.8,138.1 L66.0,131.8 L69.2,124.5 L72.4,116.3 L75.6,107.6 L78.8,98.5 L82.0,89.3 L85.2,80.2 L88.4,71.6 L91.6,63.6 L94.8,56.5 L98.0,50.5 L101.2,45.7 L104.4,42.3 L107.6,40.4 L110.8,40.0 L114.0,41.2 L117.2,43.9 L120.4,48.0 L123.6,53.4 L126.8,59.9 L130.0,67.5 L133.2,75.8 L136.4,84.7 L139.6,93.8 L142.8,103.0 L146.0,112.0 L149.2,120.5 L152.4,128.3 L155.6,135.1 L158.8,140.8 L162.0,145.2 L165.2,148.3 L168.4,149.8 L171.6,149.8 L174.8,148.3 L178.0,145.2 L181.2,140.8 L184.4,135.1 L187.6,128.3 L190.8,120.5 L194.0,112.0 L197.2,103.0 L200.4,93.8 L203.6,84.7 L206.8,75.8 L210.0,67.5 L213.2,59.9 L216.4,53.4 L219.6,48.0 L222.8,43.9 L226.0,41.2 L229.2,40.0 L232.4,40.4 L235.6,42.3 L238.8,45.7 L242.0,50.5 L245.2,56.5 L248.4,63.6 L251.6,71.6 L254.8,80.2 L258.0,89.3 L261.2,98.5 L264.4,107.6 L267.6,116.3 L270.8,124.5 L274.0,131.8 L277.2,138.1 L280.4,143.2 L283.6,146.9 L286.8,149.2 L290.0,150.0"/>
+          <text class="mt" x="44" y="44" text-anchor="end" style="font-size:13px">U²<tspan dy="3" font-size="10">max</tspan></text>
+          <text class="mt" x="160" y="168" style="font-size:13px">T/2</text><text class="mt" x="284" y="168" style="font-size:13px">T</text>
+          <text class="mt" x="38" y="166" style="font-size:12px">0</text><text class="mt" x="316" y="140" text-anchor="end">t</text>
+        </svg>
+        <div class="txt">
+          <p class="small">Identités utilisées :</p>
+          <p class="m">cos(2<i>a</i>) = 1 − 2 sin²(<i>a</i>)</p>
+          <p class="m">sin²(<i>a</i>) = ½ (1 − cos(2<i>a</i>))</p>
+        </div>
+      </div>
+      <div class="calc" style="overflow-x:auto">
+        <span class="eq"><i>U</i><sub>eff</sub> = <span class="rt">√<span><span class="fr"><span>1</span><span><i>T</i></span></span><span class="ig"><b>∫</b><span><span><i>T</i></span><span>0</span></span></span> <i>U</i>²<sub>max</sub> sin²(<i>ωt</i>) d<i>t</i></span></span></span>
+        <span class="eq"><i>U</i><sub>eff</sub> = <span class="rt">√<span><span class="fr"><span>2<i>U</i>²<sub>max</sub></span><span><i>T</i></span></span><span class="ig"><b>∫</b><span><span><i>T</i>/2</span><span>0</span></span></span> ½ (1 − cos(2<i>ωt</i>)) d<i>t</i></span></span></span>
+        <span class="eq"><i>U</i><sub>eff</sub> = <i>U</i><sub>max</sub> <span class="rt">√<span><span class="fr"><span>2</span><span><i>T</i></span></span> [ ½ (<i>t</i> − <span class="fr"><span>sin(2<i>ωt</i>)</span><span>2<i>ω</i></span></span>) ]<sub>0</sub><sup><i>T</i>/2</sup></span></span></span>
+        <span class="eq"><i>U</i><sub>eff</sub> = <i>U</i><sub>max</sub> <span class="rt">√<span><span class="fr"><span>2</span><span><i>T</i></span></span> · ½ ( <span class="fr"><span><i>T</i></span><span>2</span></span> − <span class="fr"><span>sin(<i>ωT</i>) − sin(0)</span><span>2<i>ω</i></span></span> )</span></span> &nbsp;<span class="unit">avec sin(ωT) = sin(2π) = 0</span></span>
+        <span class="eq"><i>U</i><sub>eff</sub> = <i>U</i><sub>max</sub> <span class="rt">√<span><span class="fr"><span>2</span><span><i>T</i></span></span> · <span class="fr"><span><i>T</i></span><span>4</span></span></span></span> &nbsp;⇔&nbsp; <span class="res"><i>U</i><sub>eff</sub> = <i>U</i><sub>max</sub> <span class="fr"><span><span class="rt">√<span>2</span></span></span><span>2</span></span></span> &nbsp;soit&nbsp; <span class="res"><i>U</i><sub>max</sub> = <span class="rt">√<span>2</span></span> · <i>U</i><sub>eff</sub></span></span>
+      </div>
+    </div>
+  </details>
+
+  <div class="exo">
+    <span class="lbl">Application</span>
+    <ol class="q">
+      <li>La valeur efficace d'une tension sinusoïdale est 220 V. Calculer sa valeur maximale.</li>
+      <li>Une tension alternative sinusoïdale a pour valeur maximale 537 V. Quelle est sa valeur efficace ?</li>
+      <li>Quelle est la période d'une tension sinusoïdale de fréquence <span class="m"><i>f</i> = 50 Hz</span> ? Exprimer le résultat en ms.</li>
+      <li>Calculer la fréquence d'une tension sinusoïdale dont la période vaut 100 ms.</li>
+    </ol>
+    <details class="sol prop">
+      <summary>Correction proposée <span class="tag w">calculée, absente du support</span></summary>
+      <div class="body calc">
+        <span class="eq">1. <i>U</i><sub>max</sub> = √2 × 220 ≈ <span class="res">311 V</span></span>
+        <span class="eq">2. <i>U</i><sub>eff</sub> = 537 / √2 ≈ <span class="res">380 V</span></span>
+        <span class="eq">3. <i>T</i> = 1 / 50 = 0,02 s = <span class="res">20 ms</span></span>
+        <span class="eq">4. <i>f</i> = 1 / 0,1 = <span class="res">10 Hz</span></span>
+      </div>
+    </details>
+  </div>
+
+  <h3 id="dephasage"><span class="n">2.4</span>Courant alternatif sinusoïdal et déphasage</h3>
+  <h4>Valeurs instantanées</h4>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th></th><th>Tension alternative sinusoïdale</th><th>Courant alternatif sinusoïdal</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Équation</th>
+          <td class="m" style="white-space:normal;line-height:1.9"><i>u</i>(<i>t</i>) = <i>Û</i> sin(<i>ωt</i> + <i>φ</i><sub>u</sub>)<br>= <i>U</i><sub>max</sub> sin(<i>ωt</i> + <i>φ</i><sub>u</sub>)<br>= <i>U</i>√2 sin(<i>ωt</i> + <i>φ</i><sub>u</sub>)</td>
+          <td class="m" style="white-space:normal;line-height:1.9"><i>i</i>(<i>t</i>) = <i>Î</i> sin(<i>ωt</i> + <i>φ</i><sub>i</sub>)<br>= <i>I</i><sub>max</sub> sin(<i>ωt</i> + <i>φ</i><sub>i</sub>)<br>= <i>I</i>√2 sin(<i>ωt</i> + <i>φ</i><sub>i</sub>)</td></tr>
+        <tr><th scope="row">Valeur instantanée</th><td><span class="m"><i>u</i>(<i>t</i>)</span> en V</td><td><span class="m"><i>i</i>(<i>t</i>)</span> en A</td></tr>
+        <tr><th scope="row">Valeur maximale (amplitude)</th><td class="m"><i>Û</i></td><td class="m"><i>Î</i></td></tr>
+        <tr><th scope="row">Valeur efficace</th><td><span class="m"><i>U</i></span> en V</td><td><span class="m"><i>I</i></span> en A</td></tr>
+        <tr><th scope="row">Pulsation (vitesse angulaire)</th><td colspan="2"><span class="m"><i>ω</i></span> en rad/s</td></tr>
+        <tr><th scope="row">Phase à l'instant <span class="m"><i>t</i></span></th><td><span class="m"><i>ωt</i> + <i>φ</i><sub>u</sub></span> en rad</td><td><span class="m"><i>ωt</i> + <i>φ</i><sub>i</sub></span> en rad</td></tr>
+        <tr><th scope="row">Phase à l'origine</th><td><span class="m"><i>φ</i><sub>u</sub></span> en rad</td><td><span class="m"><i>φ</i><sub>i</sub></span> en rad</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <figure class="fig" style="--w:440px">
+    <svg viewBox="0 0 360 200" role="img" aria-label="Tension u(t) et courant i(t) de même période T, le courant étant décalé de φ par rapport à la tension">
+      <path class="axis" d="M40,196 V8 M30,100 H352"/><path class="axis" d="M36,14 L40,8 L44,14 M346,96 L352,100 L346,104"/>
+      <path class="wu" d="M40.0,100.0 L43.2,92.9 L46.4,85.9 L49.7,79.1 L52.9,72.4 L56.1,66.1 L59.3,60.1 L62.6,54.4 L65.8,49.3 L69.0,44.7 L72.2,40.6 L75.4,37.2 L78.7,34.4 L81.9,32.3 L85.1,30.8 L88.3,30.1 L91.6,30.1 L94.8,30.8 L98.0,32.2 L101.2,34.3 L104.4,37.1 L107.7,40.5 L110.9,44.5 L114.1,49.1 L117.3,54.3 L120.6,59.8 L123.8,65.8 L127.0,72.2 L130.2,78.8 L133.4,85.7 L136.7,92.7 L139.9,99.8 L143.1,106.8 L146.3,113.8 L149.6,120.7 L152.8,127.4 L156.0,133.7 L159.2,139.7 L162.4,145.4 L165.7,150.5 L168.9,155.2 L172.1,159.2 L175.3,162.7 L178.6,165.5 L181.8,167.7 L185.0,169.1 L188.2,169.9 L191.4,169.9 L194.7,169.2 L197.9,167.9 L201.1,165.8 L204.3,163.0 L207.6,159.6 L210.8,155.6 L214.0,151.0 L217.2,145.9 L220.4,140.4 L223.7,134.4 L226.9,128.0 L230.1,121.4 L233.3,114.6 L236.6,107.6 L239.8,100.5 L243.0,93.4 L246.2,86.4 L249.4,79.5 L252.7,72.9 L255.9,66.5 L259.1,60.5 L262.3,54.8 L265.6,49.6 L268.8,45.0 L272.0,40.9 L275.2,37.4 L278.4,34.6 L281.7,32.4 L284.9,30.9 L288.1,30.1 L291.3,30.1 L294.6,30.7 L297.8,32.1 L301.0,34.1 L304.2,36.9 L307.4,40.3 L310.7,44.2 L313.9,48.8 L317.1,53.9 L320.3,59.5 L323.6,65.4 L326.8,71.8 L330.0,78.4"/>
+      <path class="wi" d="M40.0,139.0 L43.2,136.5 L46.4,133.7 L49.7,130.5 L52.9,127.0 L56.1,123.2 L59.3,119.2 L62.6,114.9 L65.8,110.6 L69.0,106.1 L72.2,101.6 L75.4,97.0 L78.7,92.5 L81.9,88.0 L85.1,83.7 L88.3,79.6 L91.6,75.6 L94.8,71.9 L98.0,68.5 L101.2,65.4 L104.4,62.7 L107.7,60.3 L110.9,58.4 L114.1,56.9 L117.3,55.8 L120.6,55.2 L123.8,55.0 L127.0,55.3 L130.2,56.0 L133.4,57.3 L136.7,58.9 L139.9,61.0 L143.1,63.4 L146.3,66.2 L149.6,69.4 L152.8,72.9 L156.0,76.7 L159.2,80.7 L162.4,84.9 L165.7,89.3 L168.9,93.7 L172.1,98.3 L175.3,102.8 L178.6,107.3 L181.8,111.8 L185.0,116.1 L188.2,120.3 L191.4,124.2 L194.7,128.0 L197.9,131.4 L201.1,134.5 L204.3,137.2 L207.6,139.6 L210.8,141.5 L214.0,143.1 L217.2,144.2 L220.4,144.8 L223.7,145.0 L226.9,144.7 L230.1,144.0 L233.3,142.8 L236.6,141.2 L239.8,139.1 L243.0,136.7 L246.2,133.9 L249.4,130.7 L252.7,127.2 L255.9,123.4 L259.1,119.4 L262.3,115.2 L265.6,110.9 L268.8,106.4 L272.0,101.9 L275.2,97.3 L278.4,92.8 L281.7,88.4 L284.9,84.0 L288.1,79.9 L291.3,75.9 L294.6,72.2 L297.8,68.7 L301.0,65.6 L304.2,62.9 L307.4,60.5 L310.7,58.5 L313.9,57.0 L317.1,55.9 L320.3,55.2 L323.6,55.0 L326.8,55.3 L330.0,56.0"/>
+      <path class="ink thin" d="M140,114 H173.3" marker-start="url(#ah)" marker-end="url(#ah)"/>
+      <text class="mt" x="150" y="132">φ</text>
+      <path class="ink thin" d="M40,186 H240" marker-start="url(#ah)" marker-end="url(#ah)"/><path class="ink thin dash" d="M240,100 V192"/>
+      <text class="mt" x="136" y="181">T</text>
+      <text class="mt tu" x="54" y="26">u(t)</text><text class="mt ti" x="132" y="48">i(t)</text>
+      <text class="mt" x="262" y="40">f = 1/T</text><text class="mt" x="346" y="92" text-anchor="end">t</text>
+    </svg>
+    <div class="legend"><span style="--c:var(--u)"><i></i>tension u(t)</span><span style="--c:var(--i)"><i></i>courant i(t)</span></div>
+  </figure>
+  <div class="formula hl">
+    <span class="cap top">Déphasage de la tension par rapport au courant</span>
+    <span class="eq"><i>φ</i> = <i>φ</i><sub>u</sub> − <i>φ</i><sub>i</sub></span>
+  </div>
+  <div class="g2">
+    <div class="card"><p class="h"><span class="m"><i>φ</i> &gt; 0</span></p><p>La tension <span class="m"><i>u</i></span> est <strong>en avance</strong> sur le courant <span class="m"><i>i</i></span>.</p></div>
+    <div class="card"><p class="h"><span class="m"><i>φ</i> &lt; 0</span></p><p>La tension <span class="m"><i>u</i></span> est <strong>en retard</strong> sur le courant <span class="m"><i>i</i></span>.</p></div>
+  </div>
+
+  <h4>Déphasage courant – tension selon la charge</h4>
+  <p>Selon le type de récepteur, le courant est soit <strong>en phase</strong> avec la tension (résistance <span class="m"><i>R</i></span>), soit <strong>déphasé en retard</strong> (bobine <span class="m"><i>L</i></span>) ou <strong>en avance</strong> (condensateur <span class="m"><i>C</i></span>). Autrement dit, lorsque la tension est maximale, le courant ne l'est pas forcément.</p>
+  <div class="g3 rlc">
+    <div class="card accent">
+      <div class="kicker">Résistance · R</div>
+      <p class="phi">φ = 0</p>
+      <svg class="mini" viewBox="0 0 240 140" role="img" aria-label="Résistance : u et i en phase">
+        <path class="axis" d="M20,134 V6 M14,70 H232"/>
+        <path class="wu" d="M20.0,70.0 L23.2,63.4 L26.5,56.9 L29.7,50.7 L32.9,44.7 L36.2,39.2 L39.4,34.1 L42.6,29.7 L45.8,25.8 L49.1,22.7 L52.3,20.4 L55.5,18.8 L58.8,18.1 L62.0,18.2 L65.2,19.1 L68.5,20.8 L71.7,23.4 L74.9,26.7 L78.2,30.7 L81.4,35.3 L84.6,40.5 L87.8,46.1 L91.1,52.1 L94.3,58.5 L97.5,65.0 L100.8,71.6 L104.0,78.1 L107.2,84.6 L110.5,90.8 L113.7,96.6 L116.9,102.1 L120.2,107.0 L123.4,111.3 L126.6,115.0 L129.8,117.9 L133.1,120.1 L136.3,121.5 L139.5,122.0 L142.8,121.7 L146.0,120.6 L149.2,118.6 L152.5,115.9 L155.7,112.4 L158.9,108.3 L162.2,103.5 L165.4,98.2 L168.6,92.5 L171.8,86.4 L175.1,80.0 L178.3,73.5 L181.5,66.9 L184.8,60.3 L188.0,53.9 L191.2,47.8 L194.5,42.0 L197.7,36.7 L200.9,31.9 L204.2,27.7 L207.4,24.3 L210.6,21.5 L213.8,19.5 L217.1,18.3 L220.3,18.0 L223.5,18.5 L226.8,19.8 L230.0,22.0"/><path class="wi" d="M20.0,70.0 L23.2,65.7 L26.5,61.5 L29.7,57.4 L32.9,53.5 L36.2,49.8 L39.4,46.5 L42.6,43.6 L45.8,41.1 L49.1,39.1 L52.3,37.5 L55.5,36.5 L58.8,36.0 L62.0,36.1 L65.2,36.7 L68.5,37.9 L71.7,39.5 L74.9,41.7 L78.2,44.3 L81.4,47.3 L84.6,50.7 L87.8,54.4 L91.1,58.3 L94.3,62.5 L97.5,66.7 L100.8,71.0 L104.0,75.3 L107.2,79.5 L110.5,83.6 L113.7,87.4 L116.9,91.0 L120.2,94.2 L123.4,97.0 L126.6,99.4 L129.8,101.3 L133.1,102.8 L136.3,103.6 L139.5,104.0 L142.8,103.8 L146.0,103.1 L149.2,101.8 L152.5,100.0 L155.7,97.7 L158.9,95.0 L162.2,91.9 L165.4,88.5 L168.6,84.7 L171.8,80.7 L175.1,76.5 L178.3,72.3 L181.5,67.9 L184.8,63.7 L188.0,59.5 L191.2,55.5 L194.5,51.7 L197.7,48.2 L200.9,45.1 L204.2,42.4 L207.4,40.1 L210.6,38.3 L213.8,37.0 L217.1,36.2 L220.3,36.0 L223.5,36.3 L226.8,37.2 L230.0,38.6"/>
+        <text class="mt" x="96" y="88" style="font-size:12px">π</text><text class="mt" x="172" y="88" style="font-size:12px">2π</text>
+      </svg>
+      <p class="m"><i>u</i>(<i>t</i>) = <i>R</i> · <i>i</i>(<i>t</i>) ⇔ <i>i</i>(<i>t</i>) = <i>G</i> · <i>u</i>(<i>t</i>)</p>
+      <ul class="small">
+        <li>Aussi appelée résistor ou conducteur ohmique (« dipôle résistif »).</li>
+        <li><span class="m"><i>R</i></span> en ohms (Ω), <span class="m"><i>G</i> = 1/<i>R</i></span> en siemens (S).</li>
+        <li><span class="m"><i>R</i> → 0</span> : court-circuit (<span class="m"><i>U</i> → 0</span>).</li>
+        <li><span class="m"><i>R</i> → ∞</span> : circuit ouvert (<span class="m"><i>I</i> → 0</span>).</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <div class="kicker">Bobine · L</div>
+      <p class="phi">φ = +90°</p>
+      <svg class="mini" viewBox="0 0 240 140" role="img" aria-label="Bobine : le courant est en retard d'un quart de période sur la tension">
+        <path class="axis" d="M20,134 V6 M14,70 H232"/>
+        <path class="wu" d="M20.0,70.0 L23.2,63.4 L26.5,56.9 L29.7,50.7 L32.9,44.7 L36.2,39.2 L39.4,34.1 L42.6,29.7 L45.8,25.8 L49.1,22.7 L52.3,20.4 L55.5,18.8 L58.8,18.1 L62.0,18.2 L65.2,19.1 L68.5,20.8 L71.7,23.4 L74.9,26.7 L78.2,30.7 L81.4,35.3 L84.6,40.5 L87.8,46.1 L91.1,52.1 L94.3,58.5 L97.5,65.0 L100.8,71.6 L104.0,78.1 L107.2,84.6 L110.5,90.8 L113.7,96.6 L116.9,102.1 L120.2,107.0 L123.4,111.3 L126.6,115.0 L129.8,117.9 L133.1,120.1 L136.3,121.5 L139.5,122.0 L142.8,121.7 L146.0,120.6 L149.2,118.6 L152.5,115.9 L155.7,112.4 L158.9,108.3 L162.2,103.5 L165.4,98.2 L168.6,92.5 L171.8,86.4 L175.1,80.0 L178.3,73.5 L181.5,66.9 L184.8,60.3 L188.0,53.9 L191.2,47.8 L194.5,42.0 L197.7,36.7 L200.9,31.9 L204.2,27.7 L207.4,24.3 L210.6,21.5 L213.8,19.5 L217.1,18.3 L220.3,18.0 L223.5,18.5 L226.8,19.8 L230.0,22.0"/><path class="wi" d="M20.0,104.0 L23.2,103.7 L26.5,102.9 L29.7,101.6 L32.9,99.7 L36.2,97.4 L39.4,94.6 L42.6,91.5 L45.8,87.9 L49.1,84.1 L52.3,80.1 L55.5,75.9 L58.8,71.6 L62.0,67.3 L65.2,63.1 L68.5,58.9 L71.7,54.9 L74.9,51.2 L78.2,47.8 L81.4,44.7 L84.6,42.0 L87.8,39.8 L91.1,38.1 L94.3,36.8 L97.5,36.2 L100.8,36.0 L104.0,36.4 L107.2,37.4 L110.5,38.8 L113.7,40.8 L116.9,43.2 L120.2,46.1 L123.4,49.4 L126.6,52.9 L129.8,56.8 L133.1,60.9 L136.3,65.1 L139.5,69.4 L142.8,73.7 L146.0,77.9 L149.2,82.1 L152.5,86.0 L155.7,89.7 L158.9,93.0 L162.2,96.0 L165.4,98.6 L168.6,100.7 L171.8,102.3 L175.1,103.4 L178.3,103.9 L181.5,103.9 L184.8,103.4 L188.0,102.3 L191.2,100.7 L194.5,98.7 L197.7,96.1 L200.9,93.2 L204.2,89.8 L207.4,86.2 L210.6,82.2 L213.8,78.1 L217.1,73.9 L220.3,69.6 L223.5,65.3 L226.8,61.1 L230.0,57.0"/>
+        <text class="mt" x="96" y="88" style="font-size:12px">π</text><text class="mt" x="172" y="88" style="font-size:12px">2π</text>
+      </svg>
+      <p class="m" style="white-space:normal"><i>u</i>(<i>t</i>) = <i>L</i> <span class="fr"><span>d<i>i</i>(<i>t</i>)</span><span>d<i>t</i></span></span> ⇔ <i>i</i>(<i>t</i>) = <span class="fr"><span>1</span><span><i>L</i></span></span><span class="ig"><b>∫</b><span><span><i>t</i></span><span><i>t</i>₀</span></span></span> <i>u</i>(<i>τ</i>) d<i>τ</i></p>
+      <ul class="small">
+        <li>Bobine ou inductance (self, inductor) : <span class="m"><i>N</i></span> spires d'un fil métallique (cuivre) enroulé, éventuellement autour d'un noyau ferromagnétique (fer).</li>
+        <li><span class="m"><i>L</i></span> en henrys (H).</li>
+        <li>Si <span class="m"><i>i</i>(<i>t</i>)</span> est constant, <span class="m"><i>u</i>(<i>t</i>) = 0</span> : la bobine se comporte comme un <strong>court-circuit</strong>.</li>
+        <li>Le courant est en <strong>quadrature arrière</strong> par rapport à la tension.</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <div class="kicker">Condensateur · C</div>
+      <p class="phi">φ = −90°</p>
+      <svg class="mini" viewBox="0 0 240 140" role="img" aria-label="Condensateur : le courant est en avance d'un quart de période sur la tension">
+        <path class="axis" d="M20,134 V6 M14,70 H232"/>
+        <path class="wu" d="M20.0,70.0 L23.2,63.4 L26.5,56.9 L29.7,50.7 L32.9,44.7 L36.2,39.2 L39.4,34.1 L42.6,29.7 L45.8,25.8 L49.1,22.7 L52.3,20.4 L55.5,18.8 L58.8,18.1 L62.0,18.2 L65.2,19.1 L68.5,20.8 L71.7,23.4 L74.9,26.7 L78.2,30.7 L81.4,35.3 L84.6,40.5 L87.8,46.1 L91.1,52.1 L94.3,58.5 L97.5,65.0 L100.8,71.6 L104.0,78.1 L107.2,84.6 L110.5,90.8 L113.7,96.6 L116.9,102.1 L120.2,107.0 L123.4,111.3 L126.6,115.0 L129.8,117.9 L133.1,120.1 L136.3,121.5 L139.5,122.0 L142.8,121.7 L146.0,120.6 L149.2,118.6 L152.5,115.9 L155.7,112.4 L158.9,108.3 L162.2,103.5 L165.4,98.2 L168.6,92.5 L171.8,86.4 L175.1,80.0 L178.3,73.5 L181.5,66.9 L184.8,60.3 L188.0,53.9 L191.2,47.8 L194.5,42.0 L197.7,36.7 L200.9,31.9 L204.2,27.7 L207.4,24.3 L210.6,21.5 L213.8,19.5 L217.1,18.3 L220.3,18.0 L223.5,18.5 L226.8,19.8 L230.0,22.0"/><path class="wi" d="M20.0,36.0 L23.2,36.3 L26.5,37.1 L29.7,38.4 L32.9,40.3 L36.2,42.6 L39.4,45.4 L42.6,48.5 L45.8,52.1 L49.1,55.9 L52.3,59.9 L55.5,64.1 L58.8,68.4 L62.0,72.7 L65.2,76.9 L68.5,81.1 L71.7,85.1 L74.9,88.8 L78.2,92.2 L81.4,95.3 L84.6,98.0 L87.8,100.2 L91.1,101.9 L94.3,103.2 L97.5,103.8 L100.8,104.0 L104.0,103.6 L107.2,102.6 L110.5,101.2 L113.7,99.2 L116.9,96.8 L120.2,93.9 L123.4,90.6 L126.6,87.1 L129.8,83.2 L133.1,79.1 L136.3,74.9 L139.5,70.6 L142.8,66.3 L146.0,62.1 L149.2,57.9 L152.5,54.0 L155.7,50.3 L158.9,47.0 L162.2,44.0 L165.4,41.4 L168.6,39.3 L171.8,37.7 L175.1,36.6 L178.3,36.1 L181.5,36.1 L184.8,36.6 L188.0,37.7 L191.2,39.3 L194.5,41.3 L197.7,43.9 L200.9,46.8 L204.2,50.2 L207.4,53.8 L210.6,57.8 L213.8,61.9 L217.1,66.1 L220.3,70.4 L223.5,74.7 L226.8,78.9 L230.0,83.0"/>
+        <text class="mt" x="96" y="88" style="font-size:12px">π</text><text class="mt" x="172" y="88" style="font-size:12px">2π</text>
+      </svg>
+      <p class="m" style="white-space:normal"><i>i</i>(<i>t</i>) = <i>C</i> <span class="fr"><span>d<i>u</i>(<i>t</i>)</span><span>d<i>t</i></span></span> ⇔ <i>u</i>(<i>t</i>) = <span class="fr"><span>1</span><span><i>C</i></span></span><span class="ig"><b>∫</b><span><span><i>t</i></span><span><i>t</i>₀</span></span></span> <i>i</i>(<i>τ</i>) d<i>τ</i></p>
+      <ul class="small">
+        <li>Deux armatures conductrices face à face, séparées par un diélectrique de permittivité absolue <span class="m"><i>ε</i></span>.</li>
+        <li><span class="m"><i>C</i></span> en farads (F).</li>
+        <li>Si <span class="m"><i>u</i>(<i>t</i>)</span> est constante, <span class="m"><i>i</i>(<i>t</i>) = 0</span> : le condensateur se comporte comme un <strong>circuit ouvert</strong>.</li>
+        <li>Le courant est en <strong>quadrature avant</strong> par rapport à la tension.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="legend"><span style="--c:var(--u)"><i></i>tension u(t)</span><span style="--c:var(--i)"><i></i>courant i(t)</span></div>
+
+  <div class="exo">
+    <span class="lbl">Application · lecture d'un oscillogramme</span>
+    <div class="side" style="border:0;padding:0;margin:4px 0 0">
+      <svg class="osc" viewBox="0 0 320 260" role="img" aria-label="Oscillogramme : grille de 10 divisions horizontales et 8 verticales ; sinusoïde d'amplitude 3 divisions et de période 10 divisions">
+        <rect x="2" y="2" width="316" height="256" rx="14" fill="var(--surface)" stroke="var(--fig-ink)" stroke-width="1.2"/>
+        <path class="grid" d="M10,10 V250 M40,10 V250 M70,10 V250 M100,10 V250 M130,10 V250 M190,10 V250 M220,10 V250 M250,10 V250 M280,10 V250 M310,10 V250 M10,10 H310 M10,40 H310 M10,70 H310 M10,100 H310 M10,160 H310 M10,190 H310 M10,220 H310 M10,250 H310"/>
+        <path class="ink" d="M160,10 V250 M10,130 H310" style="stroke-width:2"/>
+        <path class="wu" style="stroke-width:2.6" d="M10.0,130.0 L13.2,136.1 L16.5,142.1 L19.7,148.1 L22.9,154.0 L26.1,159.8 L29.4,165.5 L32.6,171.0 L35.8,176.3 L39.0,181.4 L42.3,186.3 L45.5,190.9 L48.7,195.2 L51.9,199.3 L55.2,203.0 L58.4,206.4 L61.6,209.4 L64.8,212.1 L68.1,214.4 L71.3,216.3 L74.5,217.8 L77.7,219.0 L81.0,219.7 L84.2,220.0 L87.4,219.9 L90.6,219.4 L93.9,218.5 L97.1,217.1 L100.3,215.4 L103.5,213.3 L106.8,210.8 L110.0,207.9 L113.2,204.7 L116.5,201.2 L119.7,197.3 L122.9,193.1 L126.1,188.6 L129.4,183.9 L132.6,178.9 L135.8,173.7 L139.0,168.3 L142.3,162.7 L145.5,156.9 L148.7,151.1 L151.9,145.1 L155.2,139.1 L158.4,133.0 L161.6,127.0 L164.8,120.9 L168.1,114.9 L171.3,108.9 L174.5,103.1 L177.7,97.3 L181.0,91.7 L184.2,86.3 L187.4,81.1 L190.6,76.1 L193.9,71.4 L197.1,66.9 L200.3,62.7 L203.5,58.8 L206.8,55.3 L210.0,52.1 L213.2,49.2 L216.5,46.7 L219.7,44.6 L222.9,42.9 L226.1,41.5 L229.4,40.6 L232.6,40.1 L235.8,40.0 L239.0,40.3 L242.3,41.0 L245.5,42.2 L248.7,43.7 L251.9,45.6 L255.2,47.9 L258.4,50.6 L261.6,53.6 L264.8,57.0 L268.1,60.7 L271.3,64.8 L274.5,69.1 L277.7,73.7 L281.0,78.6 L284.2,83.7 L287.4,89.0 L290.6,94.5 L293.9,100.2 L297.1,106.0 L300.3,111.9 L303.5,117.9 L306.8,123.9 L310.0,130.0"/>
+      </svg>
+      <div class="txt">
+        <p>Calibres utilisés :</p>
+        <ul>
+          <li>sensibilité verticale : <strong>16 V/div</strong> ;</li>
+          <li>vitesse de balayage : <strong>0,4 ms/div</strong>.</li>
+        </ul>
+        <ol class="q">
+          <li>Déterminer la tension maximale du signal.</li>
+          <li>Déterminer la période du signal.</li>
+          <li>Calculer la tension efficace du signal.</li>
+          <li>Calculer la fréquence du signal.</li>
+        </ol>
+      </div>
+    </div>
+    <details class="sol prop">
+      <summary>Correction proposée <span class="tag w">calculée, absente du support</span></summary>
+      <div class="body calc">
+        <span class="eq">1. Amplitude : 3 div → <i>U</i><sub>max</sub> = 3 × 16 = <span class="res">48 V</span></span>
+        <span class="eq">2. Une période : 10 div → <i>T</i> = 10 × 0,4 = <span class="res">4 ms</span></span>
+        <span class="eq">3. <i>U</i><sub>eff</sub> = 48 / √2 ≈ <span class="res">33,9 V</span></span>
+        <span class="eq">4. <i>f</i> = 1 / (4 × 10<sup>−3</sup>) = <span class="res">250 Hz</span></span>
+      </div>
+    </details>
+  </div>
+
+  <h3 id="impedances"><span class="n">2.5</span>Résumé : dipôles passifs linéaires et impédances</h3>
+  <div class="tbl-wrap">
+    <table class="tbl sym">
+      <caption>Dipôles passifs linéaires — convention récepteur</caption>
+      <thead><tr><th>Composant</th><th class="c">Symbole</th><th>Grandeur caractéristique</th><th>Loi</th><th>Unités</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Résistance (résistor)</th>
+          <td><svg viewBox="0 0 110 42" aria-hidden="true"><path class="ink" d="M4,16 H36 M74,16 H106"/><rect class="box" x="36" y="9" width="38" height="14"/><path class="wi" d="M8,16 H26" marker-end="url(#ah-i)"/><path class="wu" d="M76,34 H34" marker-end="url(#ah-u)"/></svg></td>
+          <td><span class="m"><i>R</i></span> : résistance en ohms (Ω)</td><td class="m"><i>u</i> = <i>Ri</i></td><td class="m">V = Ω·A</td></tr>
+        <tr><th scope="row">Condensateur</th>
+          <td><svg viewBox="0 0 110 42" aria-hidden="true"><path class="ink" d="M4,16 H50 M60,16 H106 M50,5 V27 M60,5 V27"/><path class="wi" d="M8,16 H30" marker-end="url(#ah-i)"/><path class="wu" d="M76,36 H34" marker-end="url(#ah-u)"/></svg></td>
+          <td><span class="m"><i>C</i></span> : capacité en farads (F)</td><td class="m"><i>i</i> = <i>C</i> <span class="fr"><span>d<i>u</i></span><span>d<i>t</i></span></span></td><td class="m">A = F·<span class="fr"><span>V</span><span>s</span></span></td></tr>
+        <tr><th scope="row">Bobine</th>
+          <td><svg viewBox="0 0 110 42" aria-hidden="true"><path class="ink" d="M4,16 H35 M35,16 a5,5 0 0 1 10,0 a5,5 0 0 1 10,0 a5,5 0 0 1 10,0 a5,5 0 0 1 10,0 M75,16 H106"/><path class="wi" d="M8,16 H28" marker-end="url(#ah-i)"/><path class="wu" d="M76,34 H34" marker-end="url(#ah-u)"/></svg></td>
+          <td><span class="m"><i>L</i></span> : inductance en henrys (H)</td><td class="m"><i>u</i> = <i>L</i> <span class="fr"><span>d<i>i</i></span><span>d<i>t</i></span></span></td><td class="m">V = H·<span class="fr"><span>A</span><span>s</span></span></td></tr>
+        <tr><th scope="row">Court-circuit</th>
+          <td><svg viewBox="0 0 110 42" aria-hidden="true"><path class="ink" d="M4,16 H106"/><path class="wi" d="M8,16 H30" marker-end="url(#ah-i)"/><text x="58" y="38" text-anchor="middle" class="sm">u = 0</text></svg></td>
+          <td class="muted">—</td><td class="m">∀<i>i</i>, <i>u</i> = 0</td><td class="muted">—</td></tr>
+        <tr><th scope="row">Circuit ouvert</th>
+          <td><svg viewBox="0 0 110 42" aria-hidden="true"><path class="ink" d="M4,16 H46 M64,16 H106"/><text x="26" y="10" text-anchor="middle" class="sm">i = 0</text><path class="wu" d="M76,34 H34" marker-end="url(#ah-u)"/></svg></td>
+          <td class="muted">—</td><td class="m">∀<i>u</i>, <i>i</i> = 0</td><td class="muted">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tbl-wrap">
+    <table class="tbl fres">
+      <caption>Impédances des dipôles passifs linéaires</caption>
+      <thead><tr><th>Dipôle</th><th>Temporelle <span class="m"><i>u</i>(<i>t</i>) ↔ <i>i</i>(<i>t</i>)</span></th><th>Module <span class="m"><i>U</i> ↔ <i>I</i></span><br><span class="muted small">(valeurs efficaces)</span></th><th>Impédance complexe</th><th class="c">Fresnel</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Résistance idéale</th><td class="m"><i>u</i>(<i>t</i>) = <i>R i</i>(<i>t</i>)</td><td class="m"><i>U</i> = <i>RI</i></td><td class="m"><i>φ</i> = 0 ; <u><i>Z</i></u> = <i>R</i></td>
+          <td><svg viewBox="0 0 70 46" aria-hidden="true"><path class="wu" d="M8,20 H62" marker-end="url(#ah-u)"/><path class="wi" d="M8,30 H44" marker-end="url(#ah-i)"/></svg></td></tr>
+        <tr><th scope="row">Inductance pure</th><td class="m"><i>u</i>(<i>t</i>) = <i>L</i> <span class="fr"><span>d<i>i</i>(<i>t</i>)</span><span>d<i>t</i></span></span></td><td class="m"><i>U</i> = <i>Lω I</i></td><td class="m"><i>φ</i> = <span class="fr"><span>π</span><span>2</span></span> ; <u><i>Z</i></u><sub>L</sub> = <i>jLω</i></td>
+          <td><svg viewBox="0 0 70 46" aria-hidden="true"><path class="wi" d="M10,40 H48" marker-end="url(#ah-i)"/><path class="wu" d="M10,40 V6" marker-end="url(#ah-u)"/></svg></td></tr>
+        <tr><th scope="row">Condensateur parfait</th><td class="m"><i>i</i>(<i>t</i>) = <i>C</i> <span class="fr"><span>d<i>u</i>(<i>t</i>)</span><span>d<i>t</i></span></span></td><td class="m"><i>U</i> = <span class="fr"><span>1</span><span><i>Cω</i></span></span> <i>I</i></td><td class="m"><i>φ</i> = −<span class="fr"><span>π</span><span>2</span></span> ; <u><i>Z</i></u><sub>C</sub> = <span class="fr"><span>1</span><span><i>jCω</i></span></span></td>
+          <td><svg viewBox="0 0 70 46" aria-hidden="true"><path class="wi" d="M10,6 H48" marker-end="url(#ah-i)"/><path class="wu" d="M10,6 V40" marker-end="url(#ah-u)"/></svg></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="legend"><span style="--c:var(--u)"><i></i>vecteur tension</span><span style="--c:var(--i)"><i></i>vecteur courant</span></div>
+
+  <h3 id="puissances"><span class="n">2.6</span>Puissances en régime sinusoïdal</h3>
+  <h4>Puissance active <span class="m">𝒫</span> (W)</h4>
+  <p>La <dfn>puissance active</dfn> (ou puissance réelle) correspond à la puissance moyenne consommée sur une période. Pour un courant <span class="m"><i>i</i>(<i>t</i>)</span> et une tension <span class="m"><i>u</i>(<i>t</i>)</span> de période <span class="m"><i>T</i></span> :</p>
+  <div class="formula">
+    <span class="eq">𝒫 = ⟨𝒫(<i>t</i>)⟩ = ⟨<i>u</i>(<i>t</i>) · <i>i</i>(<i>t</i>)⟩ = <span class="fr"><span>1</span><span><i>T</i></span></span><span class="ig"><b>∫</b><span><span><i>T</i></span><span>0</span></span></span> <i>u</i>(<i>t</i>) · <i>i</i>(<i>t</i>) d<i>t</i></span>
+  </div>
+  <p>Pour une tension sinusoïdale de valeur efficace <span class="m"><i>U</i></span> et un courant sinusoïdal de valeur efficace <span class="m"><i>I</i></span> déphasé de <span class="m"><i>φ</i></span> par rapport à la tension :</p>
+  <div class="formula hl">
+    <span class="eq">𝒫 = <i>U</i><sub>eff</sub> · <i>I</i><sub>eff</sub> · cos <i>φ</i> = <i>U</i> · <i>I</i> · cos <i>φ</i> = <span class="fr"><span><i>Û</i> · <i>Î</i></span><span>2</span></span> · cos <i>φ</i></span>
+    <span class="cap"><span class="m">cos <i>φ</i></span> : facteur de puissance</span>
+  </div>
+  <ul>
+    <li>C'est la seule puissance à avoir un <strong>sens physique direct</strong> : pour une résistance, la puissance active est la puissance thermique dissipée.</li>
+    <li>Il n'y a pas de déphasage dans une résistance : <span class="m"><i>φ</i> = 0</span> et <span class="m">cos <i>φ</i> = 1</span>.</li>
+    <li>La puissance active absorbée par un récepteur est <strong>toujours positive</strong>.</li>
+  </ul>
+
+  <h4>Puissance réactive <span class="m"><i>Q</i></span> (var)</h4>
+  <p>Puissance <strong>sans effet de travail physique</strong>, qui correspond à la partie « réactive » du courant. Son unité est le volt-ampère réactif (var). Elle n'est définie qu'en régime sinusoïdal.</p>
+  <div class="formula hl">
+    <span class="eq"><i>Q</i> = <i>U</i><sub>eff</sub> · <i>I</i><sub>eff</sub> · sin <i>φ</i></span>
+    <span class="cap">Dipôle inductif : 0 &lt; <i>φ</i> ≤ π/2 et <i>Q</i><sub>L</sub> &gt; 0 · dipôle capacitif : −π/2 ≤ <i>φ</i> &lt; 0 et <i>Q</i><sub>C</sub> &lt; 0</span>
+  </div>
+
+  <h4>Puissance apparente <span class="m"><i>S</i></span> (VA)</h4>
+  <p>Produit de la valeur efficace de la tension aux bornes du dipôle par la valeur efficace du courant qui le traverse.</p>
+  <div class="formula hl">
+    <span class="eq"><i>S</i> = <i>U</i><sub>eff</sub> · <i>I</i><sub>eff</sub> = <i>U</i> · <i>I</i></span>
+  </div>
+
+  <h4>Bilan par dipôle</h4>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th>Dipôle</th><th>Déphasage</th><th>Puissance active</th><th>Puissance réactive</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Résistance <span class="m"><i>R</i></span></th><td class="m"><i>φ</i> = 0</td>
+          <td class="m"><i>P</i> = <i>R I</i>²<sub>eff</sub> = <span class="fr"><span><i>U</i>²<sub>eff</sub></span><span><i>R</i></span></span> &gt; 0<br><small>consomme de la puissance active</small></td>
+          <td class="m"><i>Q</i> = 0</td></tr>
+        <tr><th scope="row">Inductance <span class="m"><i>L</i></span></th><td class="m"><i>φ</i> = +<span class="fr"><span>π</span><span>2</span></span></td>
+          <td class="m"><i>P</i> = 0</td>
+          <td class="m"><i>Q</i> = <i>Lω I</i>²<sub>eff</sub> = <span class="fr"><span><i>U</i>²<sub>eff</sub></span><span><i>Lω</i></span></span> &gt; 0<br><small>consomme de la puissance réactive</small></td></tr>
+        <tr><th scope="row">Condensateur <span class="m"><i>C</i></span></th><td class="m"><i>φ</i> = −<span class="fr"><span>π</span><span>2</span></span></td>
+          <td class="m"><i>P</i> = 0</td>
+          <td class="m"><i>Q</i> = −<span class="fr"><span><i>I</i>²<sub>eff</sub></span><span><i>Cω</i></span></span> = −<i>Cω U</i>²<sub>eff</sub> &lt; 0<br><small>produit de la puissance réactive</small></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">La bobine et le condensateur ne consomment pas de puissance active. Le condensateur « consomme » une puissance réactive négative : on dit qu'il <strong>produit</strong> de la puissance réactive.</p>
+
+  <h4>Relations entre les puissances</h4>
+  <div class="side">
+    <svg viewBox="0 0 270 160" role="img" aria-label="Triangle des puissances : P horizontal, Q vertical, S hypoténuse, φ angle entre P et S">
+      <path class="w1" style="stroke-width:2.6" d="M30,130 H230"/>
+      <path class="w3" style="stroke-width:2.6" d="M230,130 V40"/>
+      <path class="w2" style="stroke-width:2.6" d="M30,130 L230,40"/>
+      <path class="ink thin" d="M220,130 V120 H230"/>
+      <path class="ink" d="M76,130 A46,46 0 0 0 72,111"/>
+      <text class="mt" x="84" y="124">φ</text>
+      <text class="mt t1" x="126" y="152" style="font-size:17px">𝒫</text>
+      <text class="mt t3" x="240" y="90" style="font-size:17px">Q</text>
+      <text class="mt t2" x="112" y="76" style="font-size:17px">S</text>
+    </svg>
+    <div class="txt">
+      <p>Les trois puissances <span class="m">𝒫 = <i>UI</i> cos <i>φ</i></span>, <span class="m"><i>Q</i> = <i>UI</i> sin <i>φ</i></span> et <span class="m"><i>S</i> = <i>UI</i></span> se représentent sous la forme d'un <strong>triangle rectangle</strong>. Le théorème de Pythagore donne :</p>
+      <div class="rel">
+        <span>cos <i>φ</i> = <span class="fr"><span>𝒫</span><span><i>S</i></span></span></span>
+        <span>sin <i>φ</i> = <span class="fr"><span><i>Q</i></span><span><i>S</i></span></span></span>
+        <span>tan <i>φ</i> = <span class="fr"><span><i>Q</i></span><span>𝒫</span></span></span>
+        <span><i>S</i> = <span class="rt">√<span>𝒫² + <i>Q</i>²</span></span></span>
+      </div>
+    </div>
+  </div>
+
+  <h4>Facteur de puissance</h4>
+  <p>Le facteur de puissance caractérise le <strong>taux d'utilisation du réseau</strong>.</p>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th>Définition générale</th><th>Régime sinusoïdal et linéaire</th></tr></thead>
+      <tbody><tr><td class="m" style="font-size:1.25rem"><i>f</i><sub>P</sub> = <span class="fr"><span><i>P</i></span><span><i>S</i></span></span></td><td class="m" style="font-size:1.25rem"><i>f</i><sub>P</sub> = <span class="fr"><span><i>P</i></span><span><i>S</i></span></span> = cos <i>φ</i></td></tr></tbody>
+    </table>
+  </div>
+
+  <h4>Interprétation physique</h4>
+  <div class="g2">
+    <div class="card"><p class="h">Énergie active</p><p>Elle est absorbée et transformée dans le récepteur en énergie thermique, mécanique, chimique, etc.</p></div>
+    <div class="card"><p class="h">Énergie réactive</p><p>Partie « invisible » de l'électricité, conséquence des champs magnétiques générés par certains appareils en fonctionnement. Elle est liée aux récepteurs <strong>inductifs</strong> (moteurs, transformateurs).</p></div>
+  </div>
+  <div class="box warn">
+    <span class="lbl">Conséquence pour le réseau</span>
+    <p>La puissance réactive augmente le courant dans le générateur et dans la ligne qui alimente le récepteur : cela engendre un surcroît de pertes et nécessite un surdimensionnement des moyens de transport.</p>
+    <p>Pour une puissance active donnée, <strong>plus le facteur de puissance est faible, plus le courant est élevé</strong>. C'est pourquoi EDF impose un facteur de puissance élevé et pénalise financièrement les consommateurs d'énergie réactive.</p>
+  </div>
+
+  <h3 id="boucherot"><span class="n">2.7</span>Théorème de Boucherot</h3>
+  <p>La méthode de Boucherot traduit la <strong>conservation des puissances actives et réactives</strong>.</p>
+  <figure class="fig" style="--w:420px">
+    <svg viewBox="0 0 380 126" role="img" aria-label="Installation : n appareils en parallèle sous la même tension U, chacun consommant Pk et Qk">
+      <path class="ink" d="M40,30 H360 M40,50 H360"/>
+      <path class="wu" d="M28,52 V26" marker-end="url(#ah-u)"/><text class="mt" x="12" y="44">U</text>
+      <path class="wi" d="M52,30 H82" marker-end="url(#ah-i)"/><text class="mt" x="62" y="22">I</text>
+      <path class="ink" d="M110,30 V84 M130,50 V84 M200,30 V84 M220,50 V84 M310,30 V84 M330,50 V84"/>
+      <circle class="dot" cx="110" cy="30" r="2.4"/><circle class="dot" cx="130" cy="50" r="2.4"/><circle class="dot" cx="200" cy="30" r="2.4"/><circle class="dot" cx="220" cy="50" r="2.4"/><circle class="dot" cx="310" cy="30" r="2.4"/><circle class="dot" cx="330" cy="50" r="2.4"/>
+      <rect class="box" x="92" y="84" width="56" height="30" rx="2"/><rect class="box" x="182" y="84" width="56" height="30" rx="2"/><rect class="box" x="292" y="84" width="56" height="30" rx="2"/>
+      <text class="mt" x="120" y="104" text-anchor="middle" style="font-size:13px">P₁, Q₁</text><text class="mt" x="210" y="104" text-anchor="middle" style="font-size:13px">P₂, Q₂</text><text class="mt" x="320" y="104" text-anchor="middle" style="font-size:13px">Pₙ, Qₙ</text>
+      <text x="265" y="104" text-anchor="middle">…</text>
+    </svg>
+  </figure>
+  <div class="g2">
+    <div class="formula hl" style="margin:0">
+      <span class="cap top">Puissance active totale</span>
+      <span class="eq"><i>P</i><sub>T</sub> = <span class="op"><small>n</small><b>∑</b><small>k=1</small></span> <i>P</i><sub>k</sub> = <i>P</i><sub>1</sub> + <i>P</i><sub>2</sub> + ⋯ + <i>P</i><sub>n</sub></span>
+    </div>
+    <div class="formula hl" style="margin:0">
+      <span class="cap top">Puissance réactive totale</span>
+      <span class="eq"><i>Q</i><sub>T</sub> = <span class="op"><small>n</small><b>∑</b><small>k=1</small></span> <i>Q</i><sub>k</sub> = <i>Q</i><sub>1</sub> + <i>Q</i><sub>2</sub> + ⋯ + <i>Q</i><sub>n</sub></span>
+    </div>
+  </div>
+  <p>La puissance active (resp. réactive) totale consommée par une installation est égale à la somme des puissances actives (resp. réactives) consommées par chaque appareil ou chaque dipôle du circuit.</p>
+  <div class="formula">
+    <span class="eq"><i>S</i><sub>T</sub> = <span class="rt">√<span><i>P</i><sub>T</sub>² + <i>Q</i><sub>T</sub>²</span></span> = <i>U</i><sub>eff</sub> · <i>I</i><sub>eff</sub></span>
+    <span class="cap">Puissance apparente totale</span>
+  </div>
+  <div class="box warn">
+    <span class="lbl">Attention</span>
+    <p>Les puissances apparentes <strong>ne se conservent pas</strong> : <span class="m"><i>S</i><sub>T</sub> ≠ <span class="op"><small>n</small><b>∑</b><small>k=1</small></span> <i>S</i><sub>k</sub></span>.</p>
+  </div>
+
+  <div class="exo">
+    <span class="lbl">Exercice · atelier monophasé</span>
+    <p>Un atelier monophasé est constitué de trois ensembles de machines, constituant les charges (1), (2) et (3), mises en parallèle sur la même tension sinusoïdale à 50 Hz de valeur efficace <span class="m"><i>U</i> = 230 V</span>. Le tableau récapitule les mesures faites sur chacune des charges.</p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Charge 1</th><th>Charge 2</th><th>Charge 3</th></tr></thead>
+        <tbody>
+          <tr><td class="m"><i>P</i><sub>1</sub> = 20 kW</td><td class="m"><i>S</i><sub>2</sub> = 45 kVA</td><td class="m"><i>S</i><sub>3</sub> = 10 kVA</td></tr>
+          <tr><td class="m"><i>Q</i><sub>1</sub> = 15 kvar</td><td class="m">cos <i>φ</i><sub>2</sub> = 0,6</td><td class="m"><i>Q</i><sub>3</sub> = −5 kvar</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ol class="q">
+      <li>Calculer, pour chaque charge, l'ensemble des grandeurs électriques qui la caractérisent : courant absorbé, puissances active, réactive et apparente, facteur de puissance (notées <span class="m"><i>I</i><sub>1</sub></span>, <span class="m"><i>I</i><sub>2</sub></span>, <span class="m"><i>P</i><sub>2</sub></span>, <span class="m"><i>Q</i><sub>2</sub></span>, etc.).</li>
+      <li>En déduire la puissance active totale <span class="m"><i>P</i></span> et la puissance réactive totale <span class="m"><i>Q</i></span> consommées par la charge totale. Calculer également la puissance apparente totale <span class="m"><i>S</i></span>, le facteur de puissance global <span class="m">cos <i>φ</i></span> et le courant total absorbé <span class="m"><i>I</i><sub>eff</sub></span>.</li>
+    </ol>
+    <details class="sol prop">
+      <summary>Correction proposée <span class="tag w">calculée, absente du support</span></summary>
+      <div class="body">
+        <p class="small muted">Hypothèse : la charge 2 est inductive (<span class="m"><i>Q</i><sub>2</sub> &gt; 0</span>), l'énoncé ne donnant que <span class="m">cos <i>φ</i><sub>2</sub></span>. Pour chaque charge, <span class="m"><i>I</i> = <i>S</i> / <i>U</i></span>.</p>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th></th><th>Charge 1</th><th>Charge 2</th><th>Charge 3</th><th>Total</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">P (kW)</th><td class="num">20</td><td class="num">45 × 0,6 = 27</td><td class="num">√(10² − 5²) ≈ 8,66</td><td class="num"><strong>55,66</strong></td></tr>
+              <tr><th scope="row">Q (kvar)</th><td class="num">15</td><td class="num">45 × 0,8 = 36</td><td class="num">−5</td><td class="num"><strong>46</strong></td></tr>
+              <tr><th scope="row">S (kVA)</th><td class="num">√(20² + 15²) = 25</td><td class="num">45</td><td class="num">10</td><td class="num"><strong>√(P² + Q²) ≈ 72,2</strong></td></tr>
+              <tr><th scope="row">cos φ</th><td class="num">20/25 = 0,8</td><td class="num">0,6</td><td class="num">8,66/10 ≈ 0,87</td><td class="num"><strong>55,66/72,2 ≈ 0,77</strong></td></tr>
+              <tr><th scope="row">I (A)</th><td class="num">25 000/230 ≈ 108,7</td><td class="num">45 000/230 ≈ 195,7</td><td class="num">10 000/230 ≈ 43,5</td><td class="num"><strong>72 200/230 ≈ 314</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>On vérifie au passage le théorème de Boucherot : <span class="m"><i>S</i> ≈ 72,2 kVA</span>, alors que <span class="m"><i>S</i><sub>1</sub> + <i>S</i><sub>2</sub> + <i>S</i><sub>3</sub> = 80 kVA</span>. De même, le courant total (≈ 314 A) n'est pas la somme des courants (≈ 348 A).</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="sec" id="tri">
+  <p class="part">Partie 3</p>
+  <h2><span class="n">3</span>Régime sinusoïdal triphasé</h2>
+  <p class="lead">La majeure partie de la production et du transport de l'énergie électrique se fait sous forme triphasée.</p>
+  <p>La plupart des appareils domestiques fonctionnent néanmoins en monophasé : sur les installations modernes, seuls une phase et le neutre arrivent en général chez l'abonné. L'utilisation directe de l'énergie électrique triphasée concerne essentiellement les <strong>machines industrielles de forte puissance</strong>.</p>
+  <figure class="fig" style="--w:600px">
+    <svg viewBox="0 0 560 250" role="img" aria-label="Réseau triphasé à trois phases et un neutre : tensions simples entre phase et neutre, tensions composées entre phases, un récepteur couplé en étoile et un récepteur couplé en triangle">
+      <path class="w1" d="M20,40 H520"/><path class="w2" d="M20,75 H520"/><path class="w3" d="M20,110 H520"/>
+      <path class="ink" d="M20,210 H520"/>
+      <text class="t1" x="526" y="44" style="font-weight:600">Ph1</text><text class="t2" x="526" y="79" style="font-weight:600">Ph2</text><text class="t3" x="526" y="114" style="font-weight:600">Ph3</text><text x="526" y="214" style="font-weight:600">N</text>
+      <path class="w1" d="M40,206 V46" marker-end="url(#ah-1)"/><path class="w2" d="M80,206 V81" marker-end="url(#ah-2)"/><path class="w3" d="M120,206 V116" marker-end="url(#ah-3)"/>
+      <text class="mt t1" x="46" y="168" style="font-size:14px">v₁</text><text class="mt t2" x="86" y="178" style="font-size:14px">v₂</text><text class="mt t3" x="126" y="188" style="font-size:14px">v₃</text>
+      <text x="80" y="234" text-anchor="middle" class="sm mut">tensions simples</text>
+      <path class="wi" style="stroke:var(--ph1)" d="M150,40 H182" marker-end="url(#ah-1)"/><path class="wi" style="stroke:var(--ph2)" d="M150,75 H182" marker-end="url(#ah-2)"/><path class="wi" style="stroke:var(--ph3)" d="M150,110 H182" marker-end="url(#ah-3)"/>
+      <text class="mt" x="158" y="32" style="font-size:13px">I₁</text><text class="mt" x="158" y="67" style="font-size:13px">I₂</text><text class="mt" x="158" y="102" style="font-size:13px">I₃</text>
+      <path class="ink" d="M212,73 V46" marker-end="url(#ah)"/><path class="ink" d="M240,108 V81" marker-end="url(#ah)"/><path class="ink" d="M268,42 V104" marker-end="url(#ah)"/>
+      <text class="mt" x="216" y="64" style="font-size:13px">u₁₂</text><text class="mt" x="244" y="99" style="font-size:13px">u₂₃</text><text class="mt" x="272" y="134" style="font-size:13px">u₃₁</text>
+      <text x="240" y="160" text-anchor="middle" class="sm mut">tensions composées</text>
+      <path class="ink" d="M320,40 V142 M345,75 V142 M370,110 V142 M320,166 V180 H370 V166 M345,166 V180 M345,180 V210"/>
+      <rect class="box" x="314" y="142" width="12" height="24"/><rect class="box" x="339" y="142" width="12" height="24"/><rect class="box" x="364" y="142" width="12" height="24"/>
+      <circle class="dot" cx="320" cy="40" r="2.6"/><circle class="dot" cx="345" cy="75" r="2.6"/><circle class="dot" cx="370" cy="110" r="2.6"/><circle class="dot" cx="345" cy="180" r="2.6"/><circle class="dot" cx="345" cy="210" r="2.6"/>
+      <text x="345" y="234" text-anchor="middle" class="sm mut">couplage étoile</text>
+      <path class="ink" d="M465,40 V140 M432,75 V196 M498,110 V196 M465,140 L432,196 H498 Z"/>
+      <rect class="box" x="436.5" y="163" width="24" height="10" transform="rotate(120.5 448.5 168)"/>
+      <rect class="box" x="469.5" y="163" width="24" height="10" transform="rotate(59.5 481.5 168)"/>
+      <rect class="box" x="453" y="191" width="24" height="10"/>
+      <circle class="dot" cx="465" cy="40" r="2.6"/><circle class="dot" cx="432" cy="75" r="2.6"/><circle class="dot" cx="498" cy="110" r="2.6"/>
+      <text x="465" y="234" text-anchor="middle" class="sm mut">couplage triangle</text>
+    </svg>
+  </figure>
+
+  <h3 id="tensions-tri"><span class="n">3.1</span>Régime équilibré, tensions simples et composées</h3>
+  <div class="box def">
+    <span class="lbl">Régime équilibré</span>
+    <p>Un système triphasé est dit <dfn>équilibré</dfn> si les valeurs efficaces des trois courants sont égales et déphasées de <span class="m">2π/3</span> rad (soit 120°) l'une par rapport à l'autre.</p>
+  </div>
+
+  <h4>Tensions simples : entre une phase et le neutre</h4>
+  <div class="formula">
+    <span class="eq" style="line-height:2.1">
+      <i>V</i><sub>1</sub> = <i>v</i><sub>1</sub>(<i>t</i>) = <i>V</i><span class="rt">√<span>2</span></span> · sin(<i>ωt</i>)<br>
+      <i>V</i><sub>2</sub> = <i>v</i><sub>2</sub>(<i>t</i>) = <i>V</i><span class="rt">√<span>2</span></span> · sin(<i>ωt</i> − <span class="fr"><span>2π</span><span>3</span></span>)<br>
+      <i>V</i><sub>3</sub> = <i>v</i><sub>3</sub>(<i>t</i>) = <i>V</i><span class="rt">√<span>2</span></span> · sin(<i>ωt</i> − <span class="fr"><span>4π</span><span>3</span></span>)
+    </span>
+  </div>
+  <div class="fig-row">
+    <figure class="fig">
+      <svg viewBox="0 0 240 230" style="max-width:260px" role="img" aria-label="Diagramme de Fresnel des tensions simples : trois vecteurs de même longueur décalés de 2π/3">
+        <path class="w1" d="M110,115 L195,115" marker-end="url(#ah-1)"/>
+        <path class="w2" d="M110,115 L67.5,188.6" marker-end="url(#ah-2)"/>
+        <path class="w3" d="M110,115 L67.5,41.4" marker-end="url(#ah-3)"/>
+        <path class="ink thin" d="M142,115 A32,32 0 0 0 94,87.3" marker-end="url(#ah)"/>
+        <text class="mt" x="134" y="84" style="font-size:14px">2π/3</text>
+        <text class="mt t1" x="200" y="120">V₁</text><text class="mt t2" x="46" y="208">V₂</text><text class="mt t3" x="46" y="34">V₃</text>
+      </svg>
+      <figcaption>Représentation de Fresnel des tensions simples.</figcaption>
+    </figure>
+    <figure class="fig">
+      <svg viewBox="0 0 380 212" style="max-width:400px" role="img" aria-label="Diagramme temporel des trois tensions simples, sinusoïdes de même amplitude décalées d'un tiers de période">
+        <path class="grid dash" d="M40,30 H345 M40,170 H345"/>
+        <path class="axis" d="M40,206 V8 M30,100 H372"/><path class="axis" d="M36,14 L40,8 L44,14 M366,96 L372,100 L366,104"/>
+        <path class="ink thin" d="M140,96 V104 M240,96 V104 M340,96 V104"/>
+        <path class="w1" d="M40.0,100.0 L43.2,95.3 L46.5,90.6 L49.7,85.9 L52.9,81.3 L56.1,76.8 L59.4,72.4 L62.6,68.1 L65.8,64.0 L69.0,60.0 L72.3,56.2 L75.5,52.6 L78.7,49.3 L81.9,46.1 L85.2,43.2 L88.4,40.6 L91.6,38.2 L94.8,36.1 L98.1,34.4 L101.3,32.9 L104.5,31.7 L107.7,30.8 L111.0,30.2 L114.2,30.0 L117.4,30.1 L120.6,30.5 L123.9,31.2 L127.1,32.2 L130.3,33.6 L133.5,35.2 L136.8,37.2 L140.0,39.4 L143.2,41.9 L146.5,44.6 L149.7,47.7 L152.9,50.9 L156.1,54.4 L159.4,58.1 L162.6,62.0 L165.8,66.0 L169.0,70.2 L172.3,74.6 L175.5,79.0 L178.7,83.6 L181.9,88.2 L185.2,92.9 L188.4,97.6 L191.6,102.4 L194.8,107.1 L198.1,111.8 L201.3,116.4 L204.5,121.0 L207.7,125.4 L211.0,129.8 L214.2,134.0 L217.4,138.0 L220.6,141.9 L223.9,145.6 L227.1,149.1 L230.3,152.3 L233.5,155.4 L236.8,158.1 L240.0,160.6 L243.2,162.8 L246.5,164.8 L249.7,166.4 L252.9,167.8 L256.1,168.8 L259.4,169.5 L262.6,169.9 L265.8,170.0 L269.0,169.8 L272.3,169.2 L275.5,168.3 L278.7,167.1 L281.9,165.6 L285.2,163.9 L288.4,161.8 L291.6,159.4 L294.8,156.8 L298.1,153.9 L301.3,150.7 L304.5,147.4 L307.7,143.8 L311.0,140.0 L314.2,136.0 L317.4,131.9 L320.6,127.6 L323.9,123.2 L327.1,118.7 L330.3,114.1 L333.5,109.4 L336.8,104.7 L340.0,100.0"/>
+        <path class="w2" style="stroke-dasharray:7 4" d="M40.0,160.6 L43.2,162.8 L46.5,164.8 L49.7,166.4 L52.9,167.8 L56.1,168.8 L59.4,169.5 L62.6,169.9 L65.8,170.0 L69.0,169.8 L72.3,169.2 L75.5,168.3 L78.7,167.1 L81.9,165.6 L85.2,163.9 L88.4,161.8 L91.6,159.4 L94.8,156.8 L98.1,153.9 L101.3,150.7 L104.5,147.4 L107.7,143.8 L111.0,140.0 L114.2,136.0 L117.4,131.9 L120.6,127.6 L123.9,123.2 L127.1,118.7 L130.3,114.1 L133.5,109.4 L136.8,104.7 L140.0,100.0 L143.2,95.3 L146.5,90.6 L149.7,85.9 L152.9,81.3 L156.1,76.8 L159.4,72.4 L162.6,68.1 L165.8,64.0 L169.0,60.0 L172.3,56.2 L175.5,52.6 L178.7,49.3 L181.9,46.1 L185.2,43.2 L188.4,40.6 L191.6,38.2 L194.8,36.1 L198.1,34.4 L201.3,32.9 L204.5,31.7 L207.7,30.8 L211.0,30.2 L214.2,30.0 L217.4,30.1 L220.6,30.5 L223.9,31.2 L227.1,32.2 L230.3,33.6 L233.5,35.2 L236.8,37.2 L240.0,39.4 L243.2,41.9 L246.5,44.6 L249.7,47.7 L252.9,50.9 L256.1,54.4 L259.4,58.1 L262.6,62.0 L265.8,66.0 L269.0,70.2 L272.3,74.6 L275.5,79.0 L278.7,83.6 L281.9,88.2 L285.2,92.9 L288.4,97.6 L291.6,102.4 L294.8,107.1 L298.1,111.8 L301.3,116.4 L304.5,121.0 L307.7,125.4 L311.0,129.8 L314.2,134.0 L317.4,138.0 L320.6,141.9 L323.9,145.6 L327.1,149.1 L330.3,152.3 L333.5,155.4 L336.8,158.1 L340.0,160.6"/>
+        <path class="w3" style="stroke-dasharray:2 4" d="M40.0,39.4 L43.2,41.9 L46.5,44.6 L49.7,47.7 L52.9,50.9 L56.1,54.4 L59.4,58.1 L62.6,62.0 L65.8,66.0 L69.0,70.2 L72.3,74.6 L75.5,79.0 L78.7,83.6 L81.9,88.2 L85.2,92.9 L88.4,97.6 L91.6,102.4 L94.8,107.1 L98.1,111.8 L101.3,116.4 L104.5,121.0 L107.7,125.4 L111.0,129.8 L114.2,134.0 L117.4,138.0 L120.6,141.9 L123.9,145.6 L127.1,149.1 L130.3,152.3 L133.5,155.4 L136.8,158.1 L140.0,160.6 L143.2,162.8 L146.5,164.8 L149.7,166.4 L152.9,167.8 L156.1,168.8 L159.4,169.5 L162.6,169.9 L165.8,170.0 L169.0,169.8 L172.3,169.2 L175.5,168.3 L178.7,167.1 L181.9,165.6 L185.2,163.9 L188.4,161.8 L191.6,159.4 L194.8,156.8 L198.1,153.9 L201.3,150.7 L204.5,147.4 L207.7,143.8 L211.0,140.0 L214.2,136.0 L217.4,131.9 L220.6,127.6 L223.9,123.2 L227.1,118.7 L230.3,114.1 L233.5,109.4 L236.8,104.7 L240.0,100.0 L243.2,95.3 L246.5,90.6 L249.7,85.9 L252.9,81.3 L256.1,76.8 L259.4,72.4 L262.6,68.1 L265.8,64.0 L269.0,60.0 L272.3,56.2 L275.5,52.6 L278.7,49.3 L281.9,46.1 L285.2,43.2 L288.4,40.6 L291.6,38.2 L294.8,36.1 L298.1,34.4 L301.3,32.9 L304.5,31.7 L307.7,30.8 L311.0,30.2 L314.2,30.0 L317.4,30.1 L320.6,30.5 L323.9,31.2 L327.1,32.2 L330.3,33.6 L333.5,35.2 L336.8,37.2 L340.0,39.4"/>
+        <text class="mt" x="34" y="34" text-anchor="end" style="font-size:12px">+V<tspan dy="3" font-size="9">max</tspan></text><text class="mt" x="34" y="174" text-anchor="end" style="font-size:12px">−V<tspan dy="3" font-size="9">max</tspan></text>
+        <text class="mt" x="140" y="190" text-anchor="middle" style="font-size:12px">T/3</text><text class="mt" x="240" y="190" text-anchor="middle" style="font-size:12px">2T/3</text><text class="mt" x="340" y="190" text-anchor="middle" style="font-size:12px">T</text>
+        <text class="mt mut" x="140" y="206" text-anchor="middle" style="font-size:12px">2π/3</text><text class="mt mut" x="240" y="206" text-anchor="middle" style="font-size:12px">4π/3</text><text class="mt mut" x="340" y="206" text-anchor="middle" style="font-size:12px">2π</text>
+        <text class="mt" x="366" y="92" text-anchor="end">t</text>
+      </svg>
+      <div class="legend"><span style="--c:var(--ph1)"><i></i>v₁N</span><span style="--c:var(--ph2)"><i></i>v₂N (tirets)</span><span style="--c:var(--ph3)"><i></i>v₃N (pointillés)</span></div>
+      <figcaption>Diagramme temporel des tensions simples.</figcaption>
+    </figure>
+  </div>
+
+  <h4>Tensions composées : entre deux phases</h4>
+  <div class="side">
+    <svg viewBox="0 0 260 240" role="img" aria-label="Les vecteurs des tensions composées U12, U23, U31 forment un triangle reliant les extrémités des vecteurs V1, V2, V3">
+      <path class="w1" style="stroke-width:1.6" d="M120,125 L190,125" marker-end="url(#ah-1)"/>
+      <path class="w2" style="stroke-width:1.6" d="M120,125 L85,185.6" marker-end="url(#ah-2)"/>
+      <path class="w3" style="stroke-width:1.6" d="M120,125 L85,64.4" marker-end="url(#ah-3)"/>
+      <path class="wa" d="M85,185.6 L190,125" marker-end="url(#ah-a)"/>
+      <path class="wa" d="M85,64.4 L85,185.6" marker-end="url(#ah-a)"/>
+      <path class="wa" d="M190,125 L85,64.4" marker-end="url(#ah-a)"/>
+      <text class="mt t1" x="132" y="119" style="font-size:13px">V₁</text><text class="mt t2" x="108" y="168" style="font-size:13px">V₂</text><text class="mt t3" x="108" y="94" style="font-size:13px">V₃</text>
+      <text class="mt ta" x="148" y="178">U₁₂</text><text class="mt ta" x="50" y="130">U₂₃</text><text class="mt ta" x="146" y="80">U₃₁</text>
+    </svg>
+    <div class="txt">
+      <div class="formula hl" style="margin-top:0">
+        <span class="eq"><i>u</i> = <i>U</i><span class="rt">√<span>2</span></span> · sin(<i>ωt</i> + <i>θ</i>)</span>
+        <span class="eq"><i>U</i> = <i>V</i><span class="rt">√<span>3</span></span></span>
+      </div>
+      <div class="tbl-wrap" style="margin:0">
+        <table class="tbl">
+          <tbody>
+            <tr><td class="m"><i>u</i><sub>12</sub> = <i>v</i><sub>1</sub> − <i>v</i><sub>2</sub></td><td class="m"><span class="vec"><i>U</i><sub>12</sub></span> = <span class="vec"><i>V</i><sub>1</sub></span> − <span class="vec"><i>V</i><sub>2</sub></span></td></tr>
+            <tr><td class="m"><i>u</i><sub>23</sub> = <i>v</i><sub>2</sub> − <i>v</i><sub>3</sub></td><td class="m"><span class="vec"><i>U</i><sub>23</sub></span> = <span class="vec"><i>V</i><sub>2</sub></span> − <span class="vec"><i>V</i><sub>3</sub></span></td></tr>
+            <tr><td class="m"><i>u</i><sub>31</sub> = <i>v</i><sub>3</sub> − <i>v</i><sub>1</sub></td><td class="m"><span class="vec"><i>U</i><sub>31</sub></span> = <span class="vec"><i>V</i><sub>3</sub></span> − <span class="vec"><i>V</i><sub>1</sub></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="box key">
+    <span class="lbl">À retenir</span>
+    <ul>
+      <li><strong>Tension simple</strong> <span class="m"><i>V</i></span> : entre une phase et le neutre. <strong>Tension composée</strong> <span class="m"><i>U</i></span> : entre deux phases.</li>
+      <li>En régime équilibré, <span class="m"><i>U</i> = <i>V</i>√3</span> ; par exemple <span class="m"><i>V</i> = 230 V ⇒ <i>U</i> = 400 V</span> (réseau 3 × 400 V de l'exemple 1).</li>
+    </ul>
+  </div>
+
+  <h3 id="recepteurs"><span class="n">3.2</span>Récepteurs triphasés</h3>
+  <div class="box def">
+    <span class="lbl">Définition</span>
+    <p>Un <dfn>récepteur triphasé</dfn> est constitué de 3 dipôles <span class="m"><u><i>Z</i></u><sub>k</sub></span>, aussi appelés <em>enroulements</em> ou <em>phases</em>. Si ces 3 dipôles ont la même impédance <span class="m"><u><i>Z</i></u> = <i>Z</i> e<sup><i>jφ</i></sup></span> (3 dipôles identiques), le récepteur est dit <strong>équilibré</strong> ; sinon, on parle de récepteur triphasé <strong>déséquilibré</strong>.</p>
+  </div>
+  <figure class="fig" style="--w:460px">
+    <svg viewBox="0 0 380 182" role="img" aria-label="Réseau triphasé R, S, T, N alimentant un récepteur de trois impédances Z1, Z2, Z3 ; courants en ligne i et courants de phase j">
+      <rect x="8" y="14" width="62" height="160" rx="3" fill="none" stroke="var(--fig-soft)" stroke-dasharray="4 3"/>
+      <text x="39" y="30" text-anchor="middle" class="sm mut">Réseau</text>
+      <path class="w1" d="M20,50 H238"/><path class="w2" d="M20,90 H238"/><path class="w3" d="M20,130 H238"/><path class="ink" d="M20,162 H252" marker-end="url(#ah)"/>
+      <text class="t1" x="22" y="44" style="font-weight:600">R</text><text class="t2" x="22" y="84" style="font-weight:600">S</text><text class="t3" x="22" y="124" style="font-weight:600">T</text><text x="22" y="156" style="font-weight:600">N</text>
+      <text class="mt" x="232" y="154" style="font-size:13px">i<tspan dy="3" font-size="10">N</tspan></text>
+      <path class="w1" d="M90,159 V56" marker-end="url(#ah-1)"/><path class="w2" d="M110,159 V96" marker-end="url(#ah-2)"/><path class="w3" d="M130,159 V136" marker-end="url(#ah-3)"/>
+      <text class="mt t1" x="94" y="72" style="font-size:13px">v₁</text><text class="mt t2" x="114" y="112" style="font-size:13px">v₂</text><text class="mt t3" x="134" y="150" style="font-size:13px">v₃</text>
+      <path class="w1" d="M170,50 H202" marker-end="url(#ah-1)"/><path class="w2" d="M170,90 H202" marker-end="url(#ah-2)"/><path class="w3" d="M170,130 H202" marker-end="url(#ah-3)"/>
+      <text class="mt" x="178" y="42" style="font-size:13px">i₁</text><text class="mt" x="178" y="82" style="font-size:13px">i₂</text><text class="mt" x="178" y="122" style="font-size:13px">i₃</text>
+      <circle class="hollow" cx="242" cy="50" r="3.2"/><circle class="hollow" cx="242" cy="90" r="3.2"/><circle class="hollow" cx="242" cy="130" r="3.2"/>
+      <rect x="258" y="26" width="112" height="128" rx="3" fill="var(--fig-fill)" stroke="var(--fig-soft)" stroke-dasharray="4 3"/>
+      <circle class="hollow" cx="264" cy="50" r="3.2"/><circle class="hollow" cx="264" cy="90" r="3.2"/><circle class="hollow" cx="264" cy="130" r="3.2"/>
+      <path class="ink" d="M267,50 H280 M320,50 H362 M267,90 H280 M320,90 H362 M267,130 H280 M320,130 H362"/>
+      <rect class="box" x="280" y="41" width="40" height="18"/><rect class="box" x="280" y="81" width="40" height="18"/><rect class="box" x="280" y="121" width="40" height="18"/>
+      <text class="mt" x="300" y="55" text-anchor="middle" style="font-size:13px">Z₁</text><text class="mt" x="300" y="95" text-anchor="middle" style="font-size:13px">Z₂</text><text class="mt" x="300" y="135" text-anchor="middle" style="font-size:13px">Z₃</text>
+      <path class="ink" d="M328,50 H352" marker-end="url(#ah)"/><path class="ink" d="M328,90 H352" marker-end="url(#ah)"/><path class="ink" d="M328,130 H352" marker-end="url(#ah)"/>
+      <text class="mt" x="334" y="42" style="font-size:13px">j₁</text><text class="mt" x="334" y="82" style="font-size:13px">j₂</text><text class="mt" x="334" y="122" style="font-size:13px">j₃</text>
+      <text x="314" y="170" text-anchor="middle" class="sm mut">Récepteur</text>
+    </svg>
+  </figure>
+  <div class="g2">
+    <div class="card"><p class="h">Courants par phase · <span class="m"><i>J</i></span></p><p>Les courants qui traversent les éléments <span class="m"><i>Z</i></span> du récepteur triphasé.</p></div>
+    <div class="card"><p class="h">Courants en ligne · <span class="m"><i>I</i></span></p><p>Les courants qui passent dans les fils du réseau triphasé.</p></div>
+  </div>
+
+  <h3 id="couplages"><span class="n">3.3</span>Couplage d'un récepteur : étoile ou triangle</h3>
+  <div class="box def">
+    <span class="lbl">Définition</span>
+    <p>Le <dfn>couplage</dfn> d'un récepteur est la manière dont on connecte les trois éléments entre eux et à la ligne. À partir d'un réseau triphasé à 3 ou 4 conducteurs, il est possible de relier trois dipôles de deux manières différentes.</p>
+  </div>
+  <div class="g2">
+    <div class="card accent">
+      <div class="kicker">Couplage étoile · Y ou λ</div>
+      <p>Les trois éléments ont tous <strong>une borne en commun</strong>, connectée au neutre ; l'autre borne est connectée à l'une des trois phases.</p>
+      <svg class="mini" viewBox="0 0 300 190" role="img" aria-label="Couplage étoile : chaque impédance Z est reliée entre une phase et le point commun relié au neutre">
+        <path class="w1" d="M20,30 H120"/><path class="w2" d="M20,70 H120"/><path class="w3" d="M20,110 H120"/>
+        <path class="ink" d="M170,30 H210 M170,70 H210 M170,110 H210 M210,30 V165"/><path class="ink dash" d="M20,165 H210"/>
+        <rect class="box" x="120" y="22" width="50" height="16"/><rect class="box" x="120" y="62" width="50" height="16"/><rect class="box" x="120" y="102" width="50" height="16"/>
+        <text class="mt" x="145" y="35" text-anchor="middle" style="font-size:12px">Z</text><text class="mt" x="145" y="75" text-anchor="middle" style="font-size:12px">Z</text><text class="mt" x="145" y="115" text-anchor="middle" style="font-size:12px">Z</text>
+        <circle class="dot" cx="210" cy="70" r="2.6"/><circle class="dot" cx="210" cy="110" r="2.6"/>
+        <text class="t1" x="20" y="24" style="font-size:11px;font-weight:600">Ph1</text><text class="t2" x="20" y="64" style="font-size:11px;font-weight:600">Ph2</text><text class="t3" x="20" y="104" style="font-size:11px;font-weight:600">Ph3</text><text x="20" y="159" style="font-size:11px;font-weight:600">N</text>
+        <path class="w1" d="M58,30 H86" marker-end="url(#ah-1)"/><path class="w2" d="M58,70 H86" marker-end="url(#ah-2)"/><path class="w3" d="M58,110 H86" marker-end="url(#ah-3)"/>
+        <text class="mt" x="62" y="24" style="font-size:12px">I₁</text><text class="mt" x="62" y="64" style="font-size:12px">I₂</text><text class="mt" x="62" y="104" style="font-size:12px">I₃</text>
+        <path class="wu" d="M170,130 H122" marker-end="url(#ah-u)"/><text class="mt" x="140" y="148" style="font-size:13px">V</text>
+        <path class="ink" d="M100,107 V73" marker-end="url(#ah)"/><text class="mt" x="104" y="96" style="font-size:13px">U</text>
+        <text x="224" y="74" class="sm mut">point</text><text x="224" y="87" class="sm mut">commun</text>
+      </svg>
+      <ul class="small">
+        <li>Chaque élément est soumis à la <strong>tension simple</strong> du réseau : <span class="m"><i>V</i> = <i>V</i><sub>1</sub> = <i>V</i><sub>2</sub> = <i>V</i><sub>3</sub></span> (220 V dans l'exemple du cours).</li>
+        <li><span class="m"><i>u</i><sub>12</sub> = <i>v</i><sub>1</sub> − <i>v</i><sub>2</sub></span>, <span class="m"><i>u</i><sub>23</sub> = <i>v</i><sub>2</sub> − <i>v</i><sub>3</sub></span>, <span class="m"><i>u</i><sub>31</sub> = <i>v</i><sub>3</sub> − <i>v</i><sub>1</sub></span>.</li>
+        <li><span class="m"><i>i</i><sub>1</sub> + <i>i</i><sub>2</sub> + <i>i</i><sub>3</sub> = <i>i</i><sub>N</sub></span>.</li>
+        <li>Courant en ligne = courant par phase : <span class="m"><i>I</i> = <i>J</i></span>.</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <div class="kicker">Couplage triangle · Δ</div>
+      <p>Chaque élément est relié aux deux autres par ses bornes ; les <strong>bornes communes</strong> sont connectées à la ligne.</p>
+      <svg class="mini" viewBox="0 0 300 190" role="img" aria-label="Couplage triangle : chaque impédance Z est reliée entre deux phases, le neutre n'est pas utilisé">
+        <path class="w1" d="M20,30 H250"/><path class="w2" d="M20,90 H180"/><path class="w3" d="M20,150 H250"/>
+        <path class="ink" d="M180,30 V90 V150 M250,30 V150"/>
+        <rect class="box" x="173" y="46" width="14" height="28"/><rect class="box" x="173" y="106" width="14" height="28"/><rect class="box" x="243" y="74" width="14" height="32"/>
+        <circle class="dot" cx="180" cy="30" r="2.6"/><circle class="dot" cx="180" cy="90" r="2.6"/><circle class="dot" cx="180" cy="150" r="2.6"/><circle class="dot" cx="250" cy="30" r="2.6"/><circle class="dot" cx="250" cy="150" r="2.6"/>
+        <text style="font-size:11px;font-weight:600" class="t1" x="20" y="24">Ph1</text><text style="font-size:11px;font-weight:600" class="t2" x="20" y="84">Ph2</text><text style="font-size:11px;font-weight:600" class="t3" x="20" y="144">Ph3</text>
+        <path class="w1" d="M50,30 H78" marker-end="url(#ah-1)"/><text class="mt" x="54" y="24" style="font-size:12px">I₁</text>
+        <path class="ink" d="M180,32 V44" marker-end="url(#ah)"/><text class="mt" x="190" y="58" style="font-size:12px">J₁₂</text>
+        <path class="ink" d="M180,92 V104" marker-end="url(#ah)"/><text class="mt" x="190" y="118" style="font-size:12px">J₂₃</text>
+        <path class="ink" d="M250,148 V114" marker-end="url(#ah)"/><text class="mt" x="260" y="128" style="font-size:12px">J₃₁</text>
+        <path class="wu" d="M110,87 V34" marker-end="url(#ah-u)"/><text class="mt" x="114" y="66" style="font-size:13px">U₁₂</text>
+        <text x="20" y="180" class="sm mut">pas de neutre</text>
+      </svg>
+      <ul class="small">
+        <li>Chaque élément est soumis à la <strong>tension composée</strong> du réseau : <span class="m"><i>U</i> = <i>U</i><sub>12</sub> = <i>U</i><sub>23</sub> = <i>U</i><sub>31</sub> = √3 <i>V</i></span> (380 V dans l'exemple du cours).</li>
+        <li><span class="m"><i>i</i><sub>1</sub> = <i>j</i><sub>12</sub> − <i>j</i><sub>31</sub></span>, <span class="m"><i>i</i><sub>2</sub> = <i>j</i><sub>23</sub> − <i>j</i><sub>12</sub></span>, <span class="m"><i>i</i><sub>3</sub> = <i>j</i><sub>31</sub> − <i>j</i><sub>23</sub></span>.</li>
+        <li>Le neutre n'est pas utilisé ; pas de tension simple aux bornes des éléments.</li>
+        <li>Courant en ligne : <span class="m"><i>I</i> = <i>J</i> √3</span>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <caption>Tableau récapitulatif · relations entre courants et tensions dans les couplages équilibrés</caption>
+      <thead><tr><th>Couplage</th><th>Étoile équilibrée</th><th>Triangle équilibré</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Courants</th><td class="m"><i>I</i> = <i>J</i></td><td class="m"><i>I</i> = √3 <i>J</i></td></tr>
+        <tr><th scope="row">Tensions</th><td class="m"><i>U</i> = √3 <i>V</i></td><td class="m"><i>U</i> = <i>V</i></td></tr>
+        <tr><th scope="row">Neutre</th><td>Potentiel du point commun</td><td>Non utilisé</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Dans ce tableau, <span class="m"><i>V</i></span> désigne la tension aux bornes d'un élément et <span class="m"><i>U</i></span> la tension composée du réseau.</p>
+
+  <h3 id="puissances-tri"><span class="n">3.4</span>Puissances en triphasé</h3>
+  <h4>Rappel : régime sinusoïdal monophasé</h4>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th>Grandeur</th><th>Expression</th><th>Unité</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Puissance instantanée</th><td class="m"><i>p</i>(<i>t</i>) = <i>u</i>(<i>t</i>) <i>i</i>(<i>t</i>)</td><td>watt (W)</td></tr>
+        <tr><th scope="row">Puissance active</th><td class="m"><i>P</i> = <i>UI</i> cos <i>φ</i></td><td>watt (W)</td></tr>
+        <tr><th scope="row">Puissance apparente</th><td class="m"><i>S</i> = <i>UI</i></td><td>volt-ampère (VA)</td></tr>
+        <tr><th scope="row">Puissance réactive</th><td class="m"><i>Q</i> = <i>UI</i> sin <i>φ</i></td><td>volt-ampère réactif (var)</td></tr>
+        <tr><th scope="row">Facteur de puissance</th><td class="m"><i>k</i> = cos <i>φ</i></td><td class="muted">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>Théorème de Boucherot en triphasé</h4>
+  <p>La somme des puissances consommées ou fournies est égale à la somme des puissances présentes sur chaque phase (sur chaque dipôle) : il y a conservation de la puissance active d'une part, et de la puissance réactive d'autre part.</p>
+  <div class="formula">
+    <span class="eq"><i>P</i> = <span class="op"><small>n</small><b>∑</b><small>k=1</small></span> <i>P</i><sub>k</sub></span>
+    <span class="eq"><i>Q</i> = <span class="op"><small>n</small><b>∑</b><small>k=1</small></span> <i>Q</i><sub>k</sub></span>
+    <span class="eq"><i>S</i> = <span class="rt">√<span><i>P</i>² + <i>Q</i>²</span></span> &nbsp;mais&nbsp; <i>S</i> ≠ <span class="op"><small>n</small><b>∑</b><small>k=1</small></span> <i>S</i><sub>k</sub></span>
+  </div>
+  <div class="box warn">
+    <span class="lbl">Remarque</span>
+    <p>Le théorème de Boucherot <strong>ne concerne pas</strong> les puissances apparentes.</p>
+  </div>
+
+  <h4>Charge quelconque câblée en étoile</h4>
+  <p>En cas de charge déséquilibrée, les tensions et courants sont déphasés de <span class="m"><i>φ</i><sub>1</sub></span>, <span class="m"><i>φ</i><sub>2</sub></span> ou <span class="m"><i>φ</i><sub>3</sub></span> suivant les phases.</p>
+  <div class="formula">
+    <span class="eq"><i>p</i>(<i>t</i>) = <i>v</i><sub>1</sub>(<i>t</i>) <i>i</i><sub>1</sub>(<i>t</i>) + <i>v</i><sub>2</sub>(<i>t</i>) <i>i</i><sub>2</sub>(<i>t</i>) + <i>v</i><sub>3</sub>(<i>t</i>) <i>i</i><sub>3</sub>(<i>t</i>)</span>
+    <span class="eq"><i>P</i> = <i>V</i><sub>1</sub><i>I</i><sub>1</sub> cos <i>φ</i><sub>1</sub> + <i>V</i><sub>2</sub><i>I</i><sub>2</sub> cos <i>φ</i><sub>2</sub> + <i>V</i><sub>3</sub><i>I</i><sub>3</sub> cos <i>φ</i><sub>3</sub></span>
+    <span class="eq"><i>Q</i> = <i>V</i><sub>1</sub><i>I</i><sub>1</sub> sin <i>φ</i><sub>1</sub> + <i>V</i><sub>2</sub><i>I</i><sub>2</sub> sin <i>φ</i><sub>2</sub> + <i>V</i><sub>3</sub><i>I</i><sub>3</sub> sin <i>φ</i><sub>3</sub></span>
+  </div>
+
+  <h4>Récepteur équilibré : puissance active</h4>
+  <div class="g2">
+    <div class="card">
+      <div class="kicker">En étoile</div>
+      <p class="m" style="font-size:1.2rem;white-space:normal"><i>P</i> = 3 <i>VI</i> cos <i>φ</i> &nbsp;<span class="unit">avec U = √3 V</span> ⇒ <strong><i>P</i> = √3 <i>UI</i> cos <i>φ</i></strong></p>
+      <p class="small muted"><span class="m"><i>φ</i></span> : déphasage entre <span class="m"><i>I</i></span> et <span class="m"><i>V</i></span>.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">En triangle</div>
+      <p class="m" style="font-size:1.2rem;white-space:normal"><i>P</i> = 3 <i>UJ</i> cos <i>φ</i> &nbsp;<span class="unit">avec I = √3 J</span> ⇒ <strong><i>P</i> = √3 <i>UI</i> cos <i>φ</i></strong></p>
+      <p class="small muted"><span class="m"><i>φ</i></span> : déphasage entre <span class="m"><i>U</i></span> et <span class="m"><i>J</i></span>.</p>
+    </div>
+  </div>
+  <h4>Récepteur équilibré : puissances réactive et apparente</h4>
+  <div class="formula hl">
+    <span class="eq"><i>Q</i> = √3 <i>UI</i> sin <i>φ</i></span>
+    <span class="eq"><i>S</i> = √3 <i>UI</i> = <span class="rt">√<span><i>P</i>² + <i>Q</i>²</span></span></span>
+    <span class="cap">Valables en étoile et en triangle · <span class="m"><i>φ</i></span> n'intervient pas dans <span class="m"><i>S</i></span></span>
+  </div>
+  <p class="small muted"><span class="m"><i>φ</i></span> est le déphasage entre les grandeurs traversant les éléments : <span class="m"><i>I</i></span> et <span class="m"><i>V</i></span> en étoile, <span class="m"><i>J</i></span> et <span class="m"><i>U</i></span> en triangle.</p>
+
+  <div class="box key">
+    <span class="lbl">À retenir · triangle des puissances en triphasé</span>
+    <div class="side" style="border:0;background:transparent;padding:0;margin:6px 0 0">
+      <svg viewBox="0 0 270 160" role="img" aria-label="Triangle des puissances : P horizontal, Q vertical, S hypoténuse">
+        <path class="w1" style="stroke-width:2.6" d="M30,130 H230"/><path class="w3" style="stroke-width:2.6" d="M230,130 V40"/><path class="w2" style="stroke-width:2.6" d="M30,130 L230,40"/>
+        <path class="ink thin" d="M220,130 V120 H230"/><path class="ink" d="M76,130 A46,46 0 0 0 72,111"/>
+        <text class="mt" x="84" y="124">φ</text><text class="mt t1" x="126" y="152" style="font-size:17px">𝒫</text><text class="mt t3" x="240" y="90" style="font-size:17px">Q</text><text class="mt t2" x="112" y="76" style="font-size:17px">S</text>
+      </svg>
+      <div class="txt">
+        <div class="rel" style="grid-template-columns:max-content">
+          <span><i>S</i>² = 𝒫² + <i>Q</i>²</span>
+          <span>𝒫 = <i>S</i> · cos <i>φ</i></span>
+          <span><i>Q</i> = <i>S</i> · sin <i>φ</i> = 𝒫 · tan <i>φ</i></span>
+        </div>
+      </div>
+    </div>
+    <div class="tbl-wrap" style="margin:12px 0 0">
+      <table class="tbl">
+        <thead><tr><th>Puissance</th><th>Expression</th><th>Rôle</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Active 𝒫 (W)</th><td class="m">√3 <i>UI</i> cos <i>φ</i> = 3 <i>VI</i> cos <i>φ</i></td><td>Puissance réellement utilisée par la machine.</td></tr>
+          <tr><th scope="row">Réactive <span class="m"><i>Q</i></span> (var)</th><td class="m">√3 <i>UI</i> sin <i>φ</i> = 3 <i>VI</i> sin <i>φ</i></td><td>Associée aux pertes, par effet Joule notamment (voir l'interprétation physique en 2.6) ; on peut la minimiser à l'aide de condensateurs.</td></tr>
+          <tr><th scope="row">Apparente <span class="m"><i>S</i></span> (VA)</th><td class="m">√3 <i>UI</i> = 3 <i>VI</i></td><td>Caractérise un alternateur ou un transformateur : puissance maximale qu'ils peuvent fournir. Sert aussi à dimensionner la section des fils, sachant que toute cette puissance ne sera pas utilisée à cause des pertes.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3 id="exemple-tri"><span class="n">3.5</span>Exemple : moteur triphasé</h3>
+  <div class="exo">
+    <span class="lbl">Exemple 1</span>
+    <p>Un moteur triphasé absorbe au réseau une puissance de <strong>2,8 kW</strong> sous <strong>3 × 400 V – 50 Hz</strong>, <span class="m">cos <i>φ</i> = 0,85</span>. Ses enroulements sont couplés en <strong>étoile</strong>. Calculer :</p>
+    <ol class="q">
+      <li>la tension aux bornes de chaque enroulement ;</li>
+      <li>l'intensité du courant de ligne ;</li>
+      <li>l'intensité du courant dans chaque enroulement ;</li>
+      <li>la puissance réactive.</li>
+    </ol>
+    <details class="sol">
+      <summary>Voir la correction</summary>
+      <div class="body calc">
+        <span class="eq">1. <i>V</i> = <span class="fr"><span><i>U</i></span><span>√3</span></span> = <span class="fr"><span>400</span><span>√3</span></span> = <span class="res">230 V</span></span>
+        <span class="eq">2 et 3. En étoile, <i>I</i> = <i>J</i> = <span class="fr"><span><i>P</i></span><span>√3 <i>U</i> cos <i>φ</i></span></span> = <span class="fr"><span>2 800</span><span>1,73 × 400 × 0,85</span></span> = <span class="res">4,76 A</span></span>
+        <span class="eq">4. sin <i>φ</i> = sin(arccos 0,85) = 0,526</span>
+        <span class="eq">&nbsp;&nbsp;&nbsp;&nbsp;<i>Q</i> = √3 <i>UI</i> sin <i>φ</i> = 1,73 × 400 × 4,76 × 0,526 ≈ <span class="res">1 732 var</span> = 1,732 kvar</span>
+        <span class="eq"><i>Q</i> &gt; 0 ⇒ le moteur est de nature <strong>inductive</strong>.</span>
+      </div>
+    </details>
+  </div>
+
+  <p class="foot">Support numérique établi à partir du cours « Réseaux locaux industriels — Chapitre 2 : Circuits monophasés et triphasés » (Icam Strasbourg-Europe). Les corrections marquées « proposée » ont été calculées à partir des formules du cours et ne figurent pas dans le support original. · <a href="rli-chapitre-1-reseaux-electriques.html">← Chapitre 1</a></p>
+</section>
+
+</main>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+  var targets=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  var ticking=false;
+  function spy(){
+    ticking=false;
+    var cur=-1,lim=Math.min(160,window.innerHeight*0.25);
+    for(var k=0;k<targets.length;k++){if(targets[k]&&targets[k].getBoundingClientRect().top<=lim)cur=k;}
+    links.forEach(function(a,k){a.classList.toggle('on',k===cur);});
+  }
+  window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(spy);}},{passive:true});
+  spy();
+  var btn=document.getElementById('toggle-sol');
+  if(btn){
+    btn.addEventListener('click',function(){
+      var all=[].slice.call(document.querySelectorAll('details.sol'));
+      var open=all.some(function(d){return !d.open;});
+      all.forEach(function(d){d.open=open;});
+      btn.textContent=open?'Replier les corrections':'Déplier toutes les corrections';
+    });
+  }
+  window.addEventListener('beforeprint',function(){
+    [].forEach.call(document.querySelectorAll('details'),function(d){d.open=true;});
+  });
+})();
+
+</script>
+</body>
+</html>
